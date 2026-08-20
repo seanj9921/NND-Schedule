@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NND Vision Specialist — Team Schedule 2026</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:#0d1117;color:#e6edf3}
+    body{font-family:Inter,Segoe UI,Arial,sans-serif;min-height:100vh}
+    button{font:inherit}
+    ::-webkit-scrollbar{width:6px;height:6px}
+    ::-webkit-scrollbar-track{background:transparent}
+    ::-webkit-scrollbar-thumb{background:#30363d;border-radius:3px}
+    ::-webkit-scrollbar-thumb:hover{background:#484f58}
+    #app{min-height:100vh}
+    .page{min-height:100vh;padding:26px 20px}
+    .topline{margin:0 0 3px;font-size:10px;letter-spacing:.12em;color:#7d8590;text-transform:uppercase}
+    .header-row{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+    h1{margin:0;font-size:22px;font-weight:700;letter-spacing:-.02em}
+    .legend{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+    .legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:#7d8590}
+    .divider{width:1px;height:14px;background:#30363d}
+    .dot{width:7px;height:7px;border-radius:2px}
+    .filters{display:flex;gap:6px;margin:16px 0;flex-wrap:wrap}
+    .filter-btn{display:flex;align-items:center;gap:5px;cursor:pointer;padding:5px 11px;border-radius:999px;border:1px solid #30363d;background:transparent;color:#7d8590;font-size:12px;font-weight:500}
+    .all-btn{padding:5px 12px}
+    .week-nav{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .nav-btn{width:30px;height:30px;border-radius:8px;border:1px solid #30363d;display:flex;align-items:center;justify-content:center;background:#161b22;color:#e6edf3;font-size:17px;cursor:pointer}
+    .nav-btn:disabled{background:transparent;color:#30363d;cursor:default}
+    .week-label{font-size:15px;font-weight:600}
+    .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px}
+    .schedule{background:#161b22;border-radius:12px;border:1px solid #21262d;overflow:hidden}
+    .grid{display:grid;border-bottom:1px solid #21262d}
+    .holiday-label{padding:5px 10px;display:flex;align-items:center}
+    .holiday-label span,.pairs-label{font-size:9px;color:#4b5563;letter-spacing:.08em;text-transform:uppercase}
+    .cell-left{padding:10px 12px}
+    .cell{border-left:1px solid #21262d}
+    .date-cell{padding:10px 12px}
+    .weekday{font-size:10px;color:#6b7280;font-weight:500;margin-bottom:2px}
+    .date-num{font-size:18px;font-weight:700;line-height:1;display:flex;align-items:center;gap:5px}
+    .month{font-size:9px;color:#4b5563;margin-top:2px}
+    .today-badge{font-size:8px;font-weight:700;color:#93c5fd;background:#1e3a5f;padding:1px 4px;border-radius:3px}
+    .member-row{display:grid;transition:opacity .18s}
+    .member-left{padding:11px 12px;display:flex;align-items:center;gap:8px;cursor:pointer}
+    .member-first{font-size:12px;font-weight:600;color:#e6edf3;line-height:1.2}
+    .member-last{font-size:9px;color:#4b5563;line-height:1.2}
+    .shift-cell{border-left:1px solid #21262d;padding:10px 12px;display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+    .shift-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:18px;font-size:10px;border-radius:4px;font-weight:600;font-family:Consolas,'Courier New',monospace;letter-spacing:.02em;flex-shrink:0}
+    .shift-D{background:linear-gradient(135deg,#78350f,#92400e);border:1px solid #d97706;color:#fbbf24}
+    .shift-N{background:linear-gradient(135deg,#1e3a5f,#1e40af);border:1px solid #3b82f6;color:#93c5fd}
+    .shift-OFF{background:transparent;border:1px solid #21262d;color:#4b5563}
+    .avatar{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;flex-shrink:0;font-weight:700;font-family:Consolas,'Courier New',monospace}
+    .partner-row{display:flex;align-items:center;gap:3px}
+    .partner-row .with{font-size:8px;color:#4b5563}
+    .pairs-row{display:grid;border-top:2px solid #21262d;background:#0b0f16}
+    .pairs-left{padding:9px 12px;display:flex;align-items:center}
+    .pair-chip{display:flex;align-items:center;gap:4px;margin-bottom:3px;border-radius:6px;padding:3px 6px}
+    .pair-shift{font-size:9px;font-weight:700;font-family:Consolas,'Courier New',monospace;width:10px;flex-shrink:0}
+    .pair-names{font-size:9px;color:#6b7280;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+    .detail{margin-top:14px;background:#161b22;border-radius:12px;border:1px solid #21262d;padding:16px 20px}
+    .selected-row{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+    .selected-chip{display:flex;align-items:center;gap:5px;border-radius:999px;padding:4px 10px}
+    .this-week{font-size:11px;color:#4b5563}
+    .detail-grid,.stats-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}
+    .detail-card{border-radius:8px;padding:9px 7px;text-align:center}
+    .detail-date,.stats-date{font-size:9px;color:#4b5563;margin-bottom:4px}
+    .stat-card{background:#161b22;border-radius:8px;padding:9px 10px}
+    .stats-grid{gap:9px;margin-top:12px}
+    .stat-values{display:flex;gap:6px}
+    .stat-col{text-align:center}
+    .stat-num{font-size:17px;font-weight:700;font-family:Consolas,'Courier New',monospace}
+    .stat-label{font-size:8px;color:#4b5563}
+    .stat-divider{width:1px;background:#21262d}
+    @media(max-width:699px){
+      .page{padding:14px 10px}
+      h1{font-size:18px}
+      .desktop-legend{display:none}
+      .mobile-legend{display:flex!important;margin-bottom:10px}
+      .filters{margin:0 0 10px}
+      .filter-btn{padding:4px 8px;font-size:11px}
+      .all-btn{padding:4px 10px}
+      .week-label{font-size:13px}
+      .schedule{min-width:700px}
+      .date-cell{padding:8px}
+      .date-num{font-size:15px}
+      .member-left{padding:9px 7px}
+      .member-first{font-size:11px}
+      .shift-cell{padding:8px 6px}
+      .detail{padding:12px 10px}
+      .detail-grid{gap:5px}
+      .detail-card{padding:7px 4px}
+      .stats-grid{gap:5px}
+      .stat-card{padding:7px 6px}
+      .stat-num{font-size:13px}
+    }
+    @media(min-width:700px){.mobile-legend{display:none!important}}
+  </style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+(() => {
+  const MEMBERS = [
+    { id:'kim', first:'Daeock', last:'Kim', initials:'DK', phase:2, hue:'#60a5fa' },
+    { id:'shin', first:'Seungha', last:'Shin', initials:'SS', phase:0, hue:'#a78bfa' },
+    { id:'park', first:'Junho', last:'Park', initials:'JP', phase:10, hue:'#34d399' },
+    { id:'song', first:'Youwon', last:'Song', initials:'YS', phase:8, hue:'#fbbf24' },
+    { id:'lee', first:'Jongmin', last:'Lee', initials:'JL', phase:6, hue:'#f87171' },
+    { id:'ju', first:'Sihyun', last:'Joo', initials:'SJ', phase:4, hue:'#e879f9' }
+  ];
+
+  const SCHEDULE_START = new Date(2026,7,17);
+  const SCHEDULE_END = new Date(2026,11,31);
+  const HOLIDAYS = {
+    '2026-09-07': {label:'Labor Day',short:'Labor',type:'federal'},
+    '2026-11-03': {label:'Federal Election',short:'Election',type:'federal'},
+    '2026-11-11': {label:'Veterans Day',short:'Veterans',type:'federal'},
+    '2026-11-26': {label:'Thanksgiving',short:'Thanks',type:'thanks'},
+    '2026-11-27': {label:'Thanksgiving',short:'Thanks',type:'thanks'},
+    '2026-12-24': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-25': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-26': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-27': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-28': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-29': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-30': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'},
+    '2026-12-31': {label:'Holiday Shutdown',short:'Shutdown',type:'shutdown'}
+  };
+  const HOLIDAY_STYLE = {
+    federal:{bg:'#1a0808',accent:'#ef4444',text:'#fca5a5'},
+    thanks:{bg:'#1a1208',accent:'#f59e0b',text:'#fcd34d'},
+    shutdown:{bg:'#0d0a1a',accent:'#8b5cf6',text:'#c4b5fd'}
+  };
+  const WEEKDAYS=['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+  const MONTH_NAMES=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+  function daysBetween(a,b){ return Math.round((b-a)/86400000); }
+  function addDays(d,n){ const r=new Date(d); r.setDate(r.getDate()+n); return r; }
+  function weekMonday(d){ const r=new Date(d); r.setHours(0,0,0,0); const day=r.getDay(); r.setDate(r.getDate()-(day===0?6:day-1)); return r; }
+  function inSchedule(d){ return d>=SCHEDULE_START && d<=SCHEDULE_END; }
+  function dateKey(d){ return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+  function getShift(phase,date){
+    const p=((phase+daysBetween(SCHEDULE_START,date))%12+12)%12;
+    if(p<=3)return'D'; if(p<=5)return'OFF'; if(p<=9)return'N'; return'OFF';
+  }
+  function buildWeek(mon,today){
+    return Array.from({length:7},(_,i)=>{
+      const date=addDays(mon,i), active=inSchedule(date);
+      const shifts=MEMBERS.map(m=>({member:m,shift:active?getShift(m.phase,date):'OFF'}));
+      return {
+        date,active,isToday:date.getTime()===today.getTime(),isWeekend:i>=5,
+        holiday:active?(HOLIDAYS[dateKey(date)]||null):null, shifts,
+        dPair:active?shifts.filter(s=>s.shift==='D').map(s=>s.member):[],
+        nPair:active?shifts.filter(s=>s.shift==='N').map(s=>s.member):[]
+      };
+    });
+  }
+  const NAV_MIN=weekMonday(addDays(SCHEDULE_START,-28));
+  const NAV_MAX=weekMonday(SCHEDULE_END);
+  const now=new Date(); now.setHours(0,0,0,0);
+  let weekMon=weekMonday(now);
+  if(weekMon<NAV_MIN)weekMon=new Date(NAV_MIN);
+  if(weekMon>NAV_MAX)weekMon=new Date(NAV_MAX);
+  let selected=[];
+
+  const esc=s=>String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+  function avatar(m,size=22){
+    const fs=Math.max(7,size*.38);
+    return `<span class="avatar" style="width:${size}px;height:${size}px;background:${m.hue}22;border:1.5px solid ${m.hue}66;color:${m.hue};font-size:${fs}px">${esc(m.initials)}</span>`;
+  }
+  function badge(shift){ return `<span class="shift-badge shift-${shift}">${shift}</span>`; }
+  function pairChip(members,shift,compact=false){
+    const accent=shift==='D'?'#d97706':'#3b82f6', bg=shift==='D'?'#78350f33':'#1e3a5f33';
+    return `<div class="pair-chip" style="background:${bg};border:1px solid ${accent}44;${compact?'gap:3px;padding:2px 4px;':''}">
+      <span class="pair-shift" style="color:${accent}">${shift}</span>
+      <div style="display:flex;gap:2px">${members.map(m=>avatar(m,compact?15:17)).join('')}</div>
+      ${compact?'':`<span class="pair-names">${members.map(m=>esc(m.first)).join(' & ')}</span>`}
+    </div>`;
+  }
+
+  function render(){
+    const app=document.getElementById('app');
+    const mobile=window.innerWidth<700;
+    const week=buildWeek(weekMon,now);
+    const focused=new Set(selected), filtered=selected.length>0;
+    const selMembers=MEMBERS.filter(m=>focused.has(m.id));
+    const s=week[0].date,e=week[6].date;
+    const weekLabel=s.getMonth()===e.getMonth()
+      ? `${MONTH_NAMES[s.getMonth()]} ${s.getDate()}–${e.getDate()}, ${s.getFullYear()}`
+      : `${MONTH_NAMES[s.getMonth()]} ${s.getDate()} – ${MONTH_NAMES[e.getMonth()]} ${e.getDate()}, ${s.getFullYear()}`;
+    const label=mobile?100:156, cell=mobile?84:100, gridCols=`${label}px repeat(7,minmax(${cell}px,1fr))`;
+
+    const legend = `<div class="legend">
+      ${['D','N','OFF'].map(x=>`<div class="legend-item">${badge(x)}<span>${x==='D'?'Day':x==='N'?'Night':'Off'}</span></div>`).join('')}
+    </div>`;
+
+    const holidayBanner=week.some(d=>d.holiday)?`
+      <div class="grid" style="grid-template-columns:${gridCols}">
+        <div class="holiday-label"><span>Holiday</span></div>
+        ${week.map(dd=>{
+          if(!dd.holiday)return `<div class="cell"></div>`;
+          const hs=HOLIDAY_STYLE[dd.holiday.type];
+          return `<div class="cell" style="background:${hs.bg};border-top:2px solid ${hs.accent};padding:4px 8px;display:flex;align-items:center;gap:4px">
+            <div style="width:5px;height:5px;border-radius:50%;background:${hs.accent};flex-shrink:0"></div>
+            <span style="font-size:9px;color:${hs.text};font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(mobile?dd.holiday.short:dd.holiday.label)}</span>
+          </div>`;
+        }).join('')}
+      </div>`:'';
+
+    const dateHeader=`<div class="grid" style="grid-template-columns:${gridCols}">
+      <div class="cell-left"></div>
+      ${week.map((dd,i)=>{
+        const hs=dd.holiday?HOLIDAY_STYLE[dd.holiday.type]:null;
+        const dim=!dd.active||dd.isWeekend;
+        const bg=dd.isToday?'#0f2744':hs?hs.bg:dd.isWeekend?'#0b0f16':'transparent';
+        const color=dd.isToday?'#58a6ff':!dd.active?'#2d333b':hs?hs.text:dd.isWeekend?'#3d444d':'#e6edf3';
+        return `<div class="cell date-cell" style="background:${bg};${dd.isToday?'border-top:2px solid #58a6ff;':''}">
+          <div class="weekday" style="color:${dim?'#2d333b':'#6b7280'}">${WEEKDAYS[i]}</div>
+          <div class="date-num" style="color:${color}">${dd.date.getDate()}${dd.isToday?'<span class="today-badge">TODAY</span>':''}</div>
+          <div class="month" style="color:${!dd.active?'#2d333b':'#4b5563'}">${MONTH_NAMES[dd.date.getMonth()]}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+
+    const memberRows=MEMBERS.map((m,mi)=>`
+      <div class="member-row" style="grid-template-columns:${gridCols};${mi<MEMBERS.length-1?'border-bottom:1px solid #21262d;':''}opacity:${filtered&&!focused.has(m.id)?.18:1}">
+        <div class="member-left" data-member="${m.id}">
+          ${avatar(m,mobile?24:28)}
+          <div><div class="member-first">${esc(m.first)}</div><div class="member-last">${esc(m.last)}</div></div>
+        </div>
+        ${week.map(dd=>{
+          const entry=dd.shifts.find(x=>x.member.id===m.id), shift=entry.shift, hs=dd.holiday?HOLIDAY_STYLE[dd.holiday.type]:null;
+          const partners=shift==='D'?dd.dPair.filter(p=>p.id!==m.id):shift==='N'?dd.nPair.filter(p=>p.id!==m.id):[];
+          const bg=dd.isToday?'#0f2744':hs?hs.bg:dd.isWeekend?'#0b0f16':'transparent';
+          return `<div class="shift-cell" style="background:${bg};opacity:${dd.active?1:.2}">
+            ${dd.active?badge(shift):''}
+            ${dd.active&&shift!=='OFF'&&partners.length?`<div class="partner-row"><span class="with">w/</span>${partners.map(p=>avatar(p,mobile?14:15)).join('')}</div>`:''}
+          </div>`;
+        }).join('')}
+      </div>`).join('');
+
+    const pairs=`<div class="pairs-row" style="grid-template-columns:${gridCols}">
+      <div class="pairs-left"><span class="pairs-label">Pairs</span></div>
+      ${week.map(dd=>{
+        const hs=dd.holiday?HOLIDAY_STYLE[dd.holiday.type]:null;
+        const showD=dd.active&&dd.dPair.length&&(!filtered||dd.dPair.some(m=>focused.has(m.id)));
+        const showN=dd.active&&dd.nPair.length&&(!filtered||dd.nPair.some(m=>focused.has(m.id)));
+        return `<div class="cell" style="padding:${mobile?'5px':'7px 8px'};background:${hs?hs.bg:dd.isWeekend?'#08090e':'#0b0f16'}">
+          ${showD?pairChip(dd.dPair,'D',mobile):''}${showN?pairChip(dd.nPair,'N',mobile):''}
+        </div>`;
+      }).join('')}
+    </div>`;
+
+    const details=selMembers.length?`<div class="detail">
+      <div class="selected-row">
+        ${selMembers.map(m=>`<div class="selected-chip" style="background:${m.hue}18;border:1px solid ${m.hue}44">
+          ${avatar(m,18)}<span style="font-size:12px;font-weight:600;color:${m.hue}">${esc(m.first)}</span><span style="font-size:10px;color:${m.hue}99">${esc(m.last)}</span>
+        </div>`).join('')}
+        <span class="this-week">— this week</span>
+      </div>
+      <div class="detail-grid">
+        ${week.map((dd,i)=>{
+          const hs=dd.holiday?HOLIDAY_STYLE[dd.holiday.type]:null;
+          return `<div class="detail-card" style="background:${hs?hs.bg:'#0d1117'};border:1px solid ${dd.isToday?'#58a6ff55':hs?hs.accent+'44':'#21262d'}">
+            <div class="detail-date">${WEEKDAYS[i]} ${dd.date.getDate()}</div>
+            ${selMembers.map(m=>{
+              const shift=dd.shifts.find(x=>x.member.id===m.id).shift;
+              const partners=shift==='D'?dd.dPair.filter(p=>p.id!==m.id):shift==='N'?dd.nPair.filter(p=>p.id!==m.id):[];
+              return `<div style="margin-bottom:5px">
+                <div style="display:flex;justify-content:center;margin-bottom:3px">${avatar(m,15)}</div>
+                ${dd.active?badge(shift):'<span style="font-size:9px;color:#2d333b">—</span>'}
+                ${dd.active&&shift!=='OFF'&&partners.length?`<div style="display:flex;justify-content:center;gap:2px;margin-top:3px">${partners.map(p=>avatar(p,12)).join('')}</div>`:''}
+              </div>`;
+            }).join('')}
+            ${dd.holiday?`<div style="font-size:8px;color:${hs.text};font-weight:600;margin-top:1px">${esc(dd.holiday.short)}</div>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`:'';
+
+    const stats=`<div class="stats-grid">${week.map((dd,i)=>{
+      const hs=dd.holiday?HOLIDAY_STYLE[dd.holiday.type]:null;
+      const border=hs?hs.accent+'55':'#21262d', top=hs?hs.accent:dd.isToday?'#58a6ff':'#21262d';
+      return `<div class="stat-card" style="border:1px solid ${border};border-top:2px solid ${top}">
+        <div class="stats-date">${WEEKDAYS[i]} ${dd.date.getDate()}</div>
+        ${dd.active?`<div class="stat-values">
+          <div class="stat-col"><div class="stat-num" style="color:#d97706">${dd.dPair.length}</div><div class="stat-label">D</div></div>
+          <div class="stat-divider"></div>
+          <div class="stat-col"><div class="stat-num" style="color:#3b82f6">${dd.nPair.length}</div><div class="stat-label">N</div></div>
+        </div>`:'<div style="font-size:10px;color:#2d333b">—</div>'}
+      </div>`;
+    }).join('')}</div>`;
+
+    app.innerHTML=`<div class="page">
+      <div style="margin-bottom:${mobile?12:20}px">
+        <p class="topline">NND Vision Specialist — 2026</p>
+        <div class="header-row"><h1>Team Schedule</h1>
+          <div class="desktop-legend legend">
+            ${['D','N','OFF'].map(x=>`<div class="legend-item">${badge(x)}<span>${x==='D'?'Day':x==='N'?'Night':'Off'}</span></div>`).join('')}
+            <div class="divider"></div>
+            <div class="legend-item"><div class="dot" style="background:#ef4444"></div><span>Federal Holiday</span></div>
+            <div class="legend-item"><div class="dot" style="background:#f59e0b"></div><span>Thanksgiving</span></div>
+            <div class="legend-item"><div class="dot" style="background:#8b5cf6"></div><span>Shutdown</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="mobile-legend">${legend}</div>
+      <div class="filters">
+        <button class="filter-btn all-btn" data-all="1" style="border-color:${selected.length===0?'#58a6ff':'#30363d'};background:${selected.length===0?'#1f3a5f':'transparent'};color:${selected.length===0?'#93c5fd':'#7d8590'}">All</button>
+        ${MEMBERS.map(m=>{const on=focused.has(m.id);return `<button class="filter-btn" data-member="${m.id}" style="border-color:${on?m.hue:'#30363d'};background:${on?m.hue+'22':'transparent'};color:${on?m.hue:'#7d8590'}">${avatar(m,mobile?14:15)}${esc(m.first)}</button>`}).join('')}
+      </div>
+      <div class="week-nav">
+        <button class="nav-btn" id="prevBtn" ${weekMon<=NAV_MIN?'disabled':''}>‹</button>
+        <span class="week-label">${weekLabel}</span>
+        <button class="nav-btn" id="nextBtn" ${addDays(weekMon,7)>NAV_MAX?'disabled':''}>›</button>
+      </div>
+      <div class="scroll"><div class="schedule">${holidayBanner}${dateHeader}${memberRows}${pairs}</div></div>
+      ${details}${stats}
+    </div>`;
+
+    document.querySelectorAll('[data-member]').forEach(el=>el.addEventListener('click',()=>{
+      const id=el.getAttribute('data-member');
+      selected=selected.includes(id)?selected.filter(x=>x!==id):[...selected,id];
+      render();
+    }));
+    document.querySelector('[data-all]').addEventListener('click',()=>{selected=[];render()});
+    const prev=document.getElementById('prevBtn'), next=document.getElementById('nextBtn');
+    if(prev&&!prev.disabled)prev.addEventListener('click',()=>{const d=addDays(weekMon,-7);if(d>=NAV_MIN){weekMon=d;render()}});
+    if(next&&!next.disabled)next.addEventListener('click',()=>{const d=addDays(weekMon,7);if(d<=NAV_MAX){weekMon=d;render()}});
+  }
+
+  window.addEventListener('resize',render);
+  render();
+})();
+</script>
+</body>
+</html>
