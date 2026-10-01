@@ -1,0 +1,545 @@
+<!doctype html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>NND Team Schedule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #0d1117;
+  color: #e6edf3;
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #30363d; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+html,body,#root{margin:0;min-height:100%;} button{font:inherit;}</style></head><body><div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script><script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script><script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script type="text/babel" data-presets="react">const { useState, useEffect } = React;
+
+// ── Data ─────────────────────────────────────────────────────────────────────
+
+const MEMBERS = [
+  { id: 'kim',  first: 'Daeock',  last: 'Kim',  initials: 'DK', phase: 2,  hue: '#60a5fa' },
+  { id: 'shin', first: 'Seungha', last: 'Shin', initials: 'SS', phase: 0,  hue: '#a78bfa' },
+  { id: 'park', first: 'Junho',   last: 'Park', initials: 'JP', phase: 16, hue: '#34d399' },
+  { id: 'lee',  first: 'Jongmin', last: 'Lee',  initials: 'JL', phase: 12, hue: '#f87171' },
+  { id: 'ju',   first: 'Sihyun',  last: 'Joo',  initials: 'SJ', phase: 4,  hue: '#e879f9' },
+]
+
+// Schedule runs Aug 17 – Dec 31, 2026
+// 24-day rotating cycle anchored to Aug 17 (day 0):
+//   pos  0- 3 = D (shift-week 1 of 2)
+//   pos  4- 5 = OFF
+//   pos  6- 9 = D (shift-week 2 of 2)
+//   pos 10-11 = OFF
+//   pos 12-15 = N (shift-week 1 of 2)
+//   pos 16-17 = OFF
+//   pos 18-21 = N (shift-week 2 of 2)
+//   pos 22-23 = OFF
+const SCHEDULE_START = new Date(2026, 7, 17)  // Aug 17
+const SCHEDULE_END   = new Date(2026, 11, 31) // Dec 31
+
+function daysBetween(a, b) {
+  return Math.round((b.getTime() - a.getTime()) / 86400000)
+}
+
+function getShift(phase, date) {
+  const di = daysBetween(SCHEDULE_START, date)
+  const p  = ((phase + di) % 24 + 24) % 24
+  if (p <= 3)  return 'D'
+  if (p <= 5)  return 'OFF'
+  if (p <= 9)  return 'D'
+  if (p <= 11) return 'OFF'
+  if (p <= 15) return 'N'
+  if (p <= 17) return 'OFF'
+  if (p <= 21) return 'N'
+  return 'OFF'
+}
+
+function inSchedule(date) {
+  return date >= SCHEDULE_START && date <= SCHEDULE_END
+}
+
+const HOLIDAYS = {
+  '2026-09-07': { label: 'Labor Day',        short: 'Labor',    type: 'federal'  },
+  '2026-11-03': { label: 'Federal Election', short: 'Election', type: 'federal'  },
+  '2026-11-11': { label: 'Veterans Day',     short: 'Veterans', type: 'federal'  },
+  '2026-11-26': { label: 'Thanksgiving',     short: 'Thanks',   type: 'thanks'   },
+  '2026-11-27': { label: 'Thanksgiving',     short: 'Thanks',   type: 'thanks'   },
+  '2026-12-24': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-25': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-26': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-27': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-28': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-29': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-30': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+  '2026-12-31': { label: 'Holiday Shutdown', short: 'Shutdown', type: 'shutdown' },
+}
+
+const HOLIDAY_STYLE = {
+  federal:  { bg: '#1a0808', accent: '#ef4444', text: '#fca5a5' },
+  thanks:   { bg: '#1a1208', accent: '#f59e0b', text: '#fcd34d' },
+  shutdown: { bg: '#0d0a1a', accent: '#8b5cf6', text: '#c4b5fd' },
+}
+
+function dateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`
+}
+
+// ── Week helpers ──────────────────────────────────────────────────────────────
+
+function weekMonday(d) {
+  const r = new Date(d)
+  r.setHours(0, 0, 0, 0)
+  const day = r.getDay()
+  r.setDate(r.getDate() - (day === 0 ? 6 : day - 1))
+  return r
+}
+
+function addDays(d, n) {
+  const r = new Date(d)
+  r.setDate(r.getDate() + n)
+  return r
+}
+
+const WEEKDAYS = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
+const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+
+// ── Types ─────────────────────────────────────────────────────────────────────
+
+
+function buildWeek(monday, today) {
+  return Array.from({ length: 7 }, (_, i) => {
+    const date = addDays(monday, i)
+    const active = inSchedule(date)
+    const hkey = dateKey(date)
+    const shifts = MEMBERS.map(m => ({
+      member: m,
+      shift: active ? getShift(m.phase, date) : 'OFF',
+    }))
+    return {
+      date,
+      active,
+      isToday:   date.getTime() === today.getTime(),
+      isWeekend: i >= 5,
+      holiday:   active ? (HOLIDAYS[hkey] ?? null) : null,
+      shifts,
+      dPair: active ? shifts.filter(s => s.shift === 'D').map(s => s.member) : [],
+      nPair: active ? shifts.filter(s => s.shift === 'N').map(s => s.member) : [],
+    }
+  })
+}
+
+// ── Hooks ─────────────────────────────────────────────────────────────────────
+
+function useWindowWidth() {
+  const [w, setW] = useState(() => window.innerWidth)
+  useEffect(() => {
+    const fn = () => setW(window.innerWidth)
+    window.addEventListener('resize', fn)
+    return () => window.removeEventListener('resize', fn)
+  }, [])
+  return w
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function Avatar({ member, size = 22 }) {
+  return (
+    <span style={{
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      width: size, height: size, borderRadius: '50%', flexShrink: 0,
+      background: member.hue + '22', border: `1.5px solid ${member.hue}66`,
+      color: member.hue, fontSize: Math.max(7, size * 0.38), fontWeight: 700,
+      fontFamily: "'JetBrains Mono', monospace",
+    }}>
+      {member.initials}
+    </span>
+  )
+}
+
+function ShiftBadge({ shift, small }) {
+  const base = small ? { width: 26, height: 18, fontSize: 10 } : { width: 32, height: 22, fontSize: 11 }
+  const color =
+    shift === 'D' ? { background: 'linear-gradient(135deg,#78350f,#92400e)', border: '1px solid #d97706', color: '#fbbf24' } :
+    shift === 'N' ? { background: 'linear-gradient(135deg,#1e3a5f,#1e40af)', border: '1px solid #3b82f6', color: '#93c5fd' } :
+                   { background: 'transparent', border: '1px solid #21262d', color: '#4b5563' }
+  return (
+    <span style={{
+      ...base, ...color,
+      display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+      borderRadius: 4, fontWeight: 600, fontFamily: "'JetBrains Mono', monospace",
+      letterSpacing: '0.02em', flexShrink: 0,
+    }}>
+      {shift}
+    </span>
+  )
+}
+
+function PairChip({ members, shift, compact }) {
+  const accent = shift === 'D' ? '#d97706' : '#3b82f6'
+  const bg     = shift === 'D' ? '#78350f33' : '#1e3a5f33'
+  return (
+    <div style={{
+      display: 'flex', alignItems: 'center', gap: compact ? 3 : 4, marginBottom: 3,
+      background: bg, border: `1px solid ${accent}44`, borderRadius: 6,
+      padding: compact ? '2px 4px' : '3px 6px',
+    }}>
+      <span style={{ fontSize: 9, fontWeight: 700, color: accent, fontFamily: "'JetBrains Mono'", width: 10, flexShrink: 0 }}>
+        {shift}
+      </span>
+      <div style={{ display: 'flex', gap: 2 }}>
+        {members.map(m => <Avatar key={m.id} member={m} size={compact ? 15 : 17} />)}
+      </div>
+      {!compact && (
+        <span style={{ fontSize: 9, color: '#6b7280', overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+          {members.map(m => m.first).join(' & ')}
+        </span>
+      )}
+    </div>
+  )
+}
+
+// ── App ───────────────────────────────────────────────────────────────────────
+
+const NAV_MIN = weekMonday(addDays(SCHEDULE_START, -28)) // 4 weeks before schedule (to show today)
+const NAV_MAX = weekMonday(SCHEDULE_END)
+
+function App() {
+  const width    = useWindowWidth()
+  const isMobile = width < 700
+
+  const today = (() => { const d = new Date(); d.setHours(0,0,0,0); return d })()
+
+  const [weekMon, setWeekMon] = useState(() => {
+    const tw = weekMonday(today)
+    if (tw < NAV_MIN) return NAV_MIN
+    if (tw > NAV_MAX) return NAV_MAX
+    return tw
+  })
+
+  const [selected, setSelected] = useState([])
+
+  const week = buildWeek(weekMon, today)
+
+  function prev() { const d = addDays(weekMon, -7); if (d >= NAV_MIN) setWeekMon(d) }
+  function next() { const d = addDays(weekMon,  7); if (d <= NAV_MAX) setWeekMon(d) }
+
+  const canPrev = weekMon > NAV_MIN
+  const canNext = addDays(weekMon, 7) <= NAV_MAX
+
+  function toggle(id) {
+    setSelected(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id])
+  }
+
+  const filtered   = selected.length > 0
+  const focusedIds = new Set(selected)
+  const selMembers = MEMBERS.filter(m => selected.includes(m.id))
+
+  const s = week[0].date, e = week[6].date
+  const weekLabel = s.getMonth() === e.getMonth()
+    ? `${MONTH_NAMES[s.getMonth()]} ${s.getDate()}–${e.getDate()}, ${s.getFullYear()}`
+    : `${MONTH_NAMES[s.getMonth()]} ${s.getDate()} – ${MONTH_NAMES[e.getMonth()]} ${e.getDate()}, ${s.getFullYear()}`
+
+  const LABEL = isMobile ? 100 : 156
+  const CELL  = isMobile ? 84  : 100
+  const gridCols = `${LABEL}px repeat(7, minmax(${CELL}px, 1fr))`
+
+  const pad = isMobile ? '8px 6px' : '10px 12px'
+
+  return (
+    <div style={{ minHeight: '100vh', background: '#0d1117', color: '#e6edf3', fontFamily: "'Inter', sans-serif", padding: isMobile ? '14px 10px' : '26px 20px' }}>
+
+      {/* ── Header ── */}
+      <div style={{ marginBottom: isMobile ? 12 : 20 }}>
+        <p style={{ margin: 0, fontSize: 10, letterSpacing: '0.12em', color: '#7d8590', textTransform: 'uppercase', marginBottom: 3 }}>
+          NND Vision Specialist — 2026
+        </p>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
+          <h1 style={{ margin: 0, fontSize: isMobile ? 18 : 22, fontWeight: 700, letterSpacing: '-0.02em' }}>
+            Team Schedule
+          </h1>
+          {!isMobile && (
+            <div style={{ display: 'flex', gap: 10, alignItems: 'center', flexWrap: 'wrap' }}>
+              {['D','N','OFF'].map(s => (
+                <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <ShiftBadge shift={s} small />
+                  <span style={{ fontSize: 11, color: '#7d8590' }}>{s === 'D' ? 'Day' : s === 'N' ? 'Night' : 'Off'}</span>
+                </div>
+              ))}
+              <div style={{ width: 1, height: 14, background: '#30363d' }} />
+              {[{ c: '#ef4444', l: 'Federal Holiday' }, { c: '#f59e0b', l: 'Thanksgiving' }, { c: '#8b5cf6', l: 'Shutdown' }].map(({ c, l }) => (
+                <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+                  <div style={{ width: 7, height: 7, borderRadius: 2, background: c }} />
+                  <span style={{ fontSize: 11, color: '#7d8590' }}>{l}</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ── Mobile legend ── */}
+      {isMobile && (
+        <div style={{ display: 'flex', gap: 8, marginBottom: 10, flexWrap: 'wrap' }}>
+          {['D','N','OFF'].map(s => (
+            <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+              <ShiftBadge shift={s} small />
+              <span style={{ fontSize: 10, color: '#7d8590' }}>{s === 'D' ? 'Day' : s === 'N' ? 'Night' : 'Off'}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ── Member filter pills ── */}
+      <div style={{ display: 'flex', gap: 6, marginBottom: isMobile ? 10 : 16, flexWrap: 'wrap' }}>
+        <button
+          onClick={() => setSelected([])}
+          style={{
+            padding: isMobile ? '4px 10px' : '5px 12px', borderRadius: 99, cursor: 'pointer',
+            border: `1px solid ${selected.length === 0 ? '#58a6ff' : '#30363d'}`,
+            background: selected.length === 0 ? '#1f3a5f' : 'transparent',
+            color: selected.length === 0 ? '#93c5fd' : '#7d8590',
+            fontSize: isMobile ? 11 : 12, fontWeight: 500,
+          }}
+        >All</button>
+        {MEMBERS.map(m => {
+          const on = focusedIds.has(m.id)
+          return (
+            <button key={m.id} onClick={() => toggle(m.id)} style={{
+              display: 'flex', alignItems: 'center', gap: 5, cursor: 'pointer',
+              padding: isMobile ? '4px 8px' : '5px 11px', borderRadius: 99,
+              border: `1px solid ${on ? m.hue : '#30363d'}`,
+              background: on ? m.hue + '22' : 'transparent',
+              color: on ? m.hue : '#7d8590',
+              fontSize: isMobile ? 11 : 12, fontWeight: 500,
+            }}>
+              <Avatar member={m} size={isMobile ? 14 : 15} />
+              {m.first}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* ── Week nav ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: '30px minmax(0, 270px) 30px', alignItems: 'center', columnGap: 10, marginBottom: 10 }}>
+        <NavBtn onClick={prev} disabled={!canPrev}>‹</NavBtn>
+        <span style={{ fontSize: isMobile ? 13 : 15, fontWeight: 600, whiteSpace: 'nowrap' }}>{weekLabel}</span>
+        <NavBtn onClick={next} disabled={!canNext}>›</NavBtn>
+      </div>
+
+      {/* ── Schedule table ── */}
+      <div style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', borderRadius: 12 }}>
+        <div style={{
+          background: '#161b22', borderRadius: 12, border: '1px solid #21262d',
+          overflow: 'hidden', minWidth: isMobile ? 700 : undefined,
+        }}>
+
+          {/* Holiday banner */}
+          {week.some(d => d.holiday) && (
+            <div style={{ display: 'grid', gridTemplateColumns: gridCols, borderBottom: '1px solid #21262d' }}>
+              <div style={{ padding: '5px 10px', display: 'flex', alignItems: 'center' }}>
+                <span style={{ fontSize: 9, color: '#4b5563', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Holiday</span>
+              </div>
+              {week.map((dd, i) => {
+                const hs = dd.holiday ? HOLIDAY_STYLE[dd.holiday.type] : null
+                return hs ? (
+                  <div key={i} style={{ borderLeft: '1px solid #21262d', background: hs.bg, borderTop: `2px solid ${hs.accent}`, padding: '4px 8px', display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <div style={{ width: 5, height: 5, borderRadius: '50%', background: hs.accent, flexShrink: 0 }} />
+                    <span style={{ fontSize: 9, color: hs.text, fontWeight: 600, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {isMobile ? dd.holiday.short : dd.holiday.label}
+                    </span>
+                  </div>
+                ) : <div key={i} style={{ borderLeft: '1px solid #21262d' }} />
+              })}
+            </div>
+          )}
+
+          {/* Date header */}
+          <div style={{ display: 'grid', gridTemplateColumns: gridCols, borderBottom: '1px solid #21262d' }}>
+            <div style={{ padding: '10px 12px' }} />
+            {week.map((dd, i) => {
+              const hs  = dd.holiday ? HOLIDAY_STYLE[dd.holiday.type] : null
+              const dim = !dd.active || dd.isWeekend
+              return (
+                <div key={i} style={{
+                  borderLeft: '1px solid #21262d',
+                  padding: isMobile ? '8px' : '10px 12px',
+                  background: dd.isToday ? '#0f2744' : hs ? hs.bg : dd.isWeekend ? '#0b0f16' : undefined,
+                  borderTop: dd.isToday ? '2px solid #58a6ff' : undefined,
+                }}>
+                  <div style={{ fontSize: 10, color: dim ? '#2d333b' : '#6b7280', fontWeight: 500, marginBottom: 2 }}>{WEEKDAYS[i]}</div>
+                  <div style={{ fontSize: isMobile ? 15 : 18, fontWeight: 700, lineHeight: 1, display: 'flex', alignItems: 'center', gap: 5,
+                    color: dd.isToday ? '#58a6ff' : !dd.active ? '#2d333b' : hs ? hs.text : dd.isWeekend ? '#3d444d' : '#e6edf3',
+                  }}>
+                    {dd.date.getDate()}
+                    {dd.isToday && <span style={{ fontSize: 8, fontWeight: 700, color: '#93c5fd', background: '#1e3a5f', padding: '1px 4px', borderRadius: 3 }}>TODAY</span>}
+                  </div>
+                  <div style={{ fontSize: 9, color: !dd.active ? '#2d333b' : '#4b5563', marginTop: 2 }}>{MONTH_NAMES[dd.date.getMonth()]}</div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Member rows */}
+          {MEMBERS.map((m, mi) => (
+            <div key={m.id} style={{
+              display: 'grid', gridTemplateColumns: gridCols,
+              borderBottom: mi < MEMBERS.length - 1 ? '1px solid #21262d' : undefined,
+              opacity: filtered && !focusedIds.has(m.id) ? 0.18 : 1,
+              transition: 'opacity 0.18s',
+            }}>
+              <div
+                onClick={() => toggle(m.id)}
+                style={{ padding: isMobile ? '9px 7px' : '11px 12px', display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer' }}
+              >
+                <Avatar member={m} size={isMobile ? 24 : 28} />
+                <div>
+                  <div style={{ fontSize: isMobile ? 11 : 12, fontWeight: 600, color: '#e6edf3', lineHeight: 1.2 }}>{m.first}</div>
+                  <div style={{ fontSize: 9, color: '#4b5563', lineHeight: 1.2 }}>{m.last}</div>
+                </div>
+              </div>
+              {week.map((dd, di) => {
+                const entry    = dd.shifts.find(s => s.member.id === m.id)
+                const shift    = entry.shift
+                const hs       = dd.holiday ? HOLIDAY_STYLE[dd.holiday.type] : null
+                const partners = shift === 'D' ? dd.dPair.filter(p => p.id !== m.id)
+                               : shift === 'N' ? dd.nPair.filter(p => p.id !== m.id) : []
+                return (
+                  <div key={di} style={{
+                    borderLeft: '1px solid #21262d', padding: isMobile ? '8px 6px' : '10px 12px',
+                    display: 'flex', flexDirection: 'column', gap: 5, alignItems: 'flex-start',
+                    background: dd.isToday ? '#0f2744' : hs ? hs.bg : dd.isWeekend ? '#0b0f16' : undefined,
+                    opacity: dd.active ? 1 : 0.2,
+                  }}>
+                    {dd.active && <ShiftBadge shift={shift} small={isMobile} />}
+                    {dd.active && shift !== 'OFF' && partners.length > 0 && (
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+                        <span style={{ fontSize: 8, color: '#4b5563' }}>w/</span>
+                        {partners.map(p => <Avatar key={p.id} member={p} size={isMobile ? 14 : 15} />)}
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          ))}
+
+          {/* Pairs summary row */}
+          <div style={{ display: 'grid', gridTemplateColumns: gridCols, borderTop: '2px solid #21262d', background: '#0b0f16' }}>
+            <div style={{ padding: isMobile ? '7px 8px' : '9px 12px', display: 'flex', alignItems: 'center' }}>
+              <span style={{ fontSize: 9, color: '#4b5563', letterSpacing: '0.08em', textTransform: 'uppercase' }}>Pairs</span>
+            </div>
+            {week.map((dd, i) => {
+              const hs = dd.holiday ? HOLIDAY_STYLE[dd.holiday.type] : null
+              const showD = dd.active && dd.dPair.length > 0 && (!filtered || dd.dPair.some(m => focusedIds.has(m.id)))
+              const showN = dd.active && dd.nPair.length > 0 && (!filtered || dd.nPair.some(m => focusedIds.has(m.id)))
+              return (
+                <div key={i} style={{ borderLeft: '1px solid #21262d', padding: isMobile ? '5px 5px' : '7px 8px', background: hs ? hs.bg : dd.isWeekend ? '#08090e' : '#0b0f16' }}>
+                  {showD && <PairChip members={dd.dPair} shift="D" compact={isMobile} />}
+                  {showN && <PairChip members={dd.nPair} shift="N" compact={isMobile} />}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Selected members detail panel ── */}
+      {selMembers.length > 0 && (
+        <div style={{ marginTop: 14, background: '#161b22', borderRadius: 12, border: '1px solid #21262d', padding: isMobile ? '12px 10px' : '16px 20px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12, flexWrap: 'wrap' }}>
+            {selMembers.map(m => (
+              <div key={m.id} style={{ display: 'flex', alignItems: 'center', gap: 5, background: m.hue + '18', border: `1px solid ${m.hue}44`, borderRadius: 99, padding: '4px 10px' }}>
+                <Avatar member={m} size={18} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: m.hue }}>{m.first}</span>
+                <span style={{ fontSize: 10, color: m.hue + '99' }}>{m.last}</span>
+              </div>
+            ))}
+            <span style={{ fontSize: 11, color: '#4b5563' }}>— this week</span>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(7, 1fr)`, gap: isMobile ? 5 : 8 }}>
+            {week.map((dd, i) => {
+              const hs = dd.holiday ? HOLIDAY_STYLE[dd.holiday.type] : null
+              return (
+                <div key={i} style={{ background: hs ? hs.bg : '#0d1117', borderRadius: 8, border: `1px solid ${dd.isToday ? '#58a6ff55' : hs ? hs.accent + '44' : '#21262d'}`, padding: isMobile ? '7px 4px' : '9px 7px', textAlign: 'center' }}>
+                  <div style={{ fontSize: 9, color: '#4b5563', marginBottom: 4 }}>{WEEKDAYS[i]} {dd.date.getDate()}</div>
+                  {selMembers.map(m => {
+                    const shift = dd.shifts.find(s => s.member.id === m.id).shift
+                    const partners = shift === 'D' ? dd.dPair.filter(p => p.id !== m.id) : shift === 'N' ? dd.nPair.filter(p => p.id !== m.id) : []
+                    return (
+                      <div key={m.id} style={{ marginBottom: 5 }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 3 }}>
+                          <Avatar member={m} size={15} />
+                        </div>
+                        {dd.active ? <ShiftBadge shift={shift} small /> : <span style={{ fontSize: 9, color: '#2d333b' }}>—</span>}
+                        {dd.active && shift !== 'OFF' && partners.length > 0 && (
+                          <div style={{ display: 'flex', justifyContent: 'center', gap: 2, marginTop: 3 }}>
+                            {partners.map(p => <Avatar key={p.id} member={p} size={12} />)}
+                          </div>
+                        )}
+                      </div>
+                    )
+                  })}
+                  {dd.holiday && <div style={{ fontSize: 8, color: hs?.text, fontWeight: 600, marginTop: 1 }}>{dd.holiday.short}</div>}
+                </div>
+              )
+            })}
+          </div>
+        </div>
+      )}
+
+      {/* ── Daily stats ── */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: isMobile ? 5 : 9, marginTop: 12 }}>
+        {week.map((dd, i) => {
+          const hs = dd.holiday ? HOLIDAY_STYLE[dd.holiday.type] : null
+          return (
+            <div key={i} style={{
+              background: '#161b22', borderRadius: 8,
+              border: `1px solid ${hs ? hs.accent + '55' : '#21262d'}`,
+              borderTop: `2px solid ${hs ? hs.accent : dd.isToday ? '#58a6ff' : '#21262d'}`,
+              padding: isMobile ? '7px 6px' : '9px 10px',
+            }}>
+              <div style={{ fontSize: 9, color: '#4b5563', marginBottom: 4 }}>{WEEKDAYS[i]} {dd.date.getDate()}</div>
+              {dd.active ? (
+                <div style={{ display: 'flex', gap: 6 }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: isMobile ? 13 : 17, fontWeight: 700, color: '#d97706', fontFamily: "'JetBrains Mono'" }}>{dd.dPair.length}</div>
+                    <div style={{ fontSize: 8, color: '#4b5563' }}>D</div>
+                  </div>
+                  <div style={{ width: 1, background: '#21262d' }} />
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: isMobile ? 13 : 17, fontWeight: 700, color: '#3b82f6', fontFamily: "'JetBrains Mono'" }}>{dd.nPair.length}</div>
+                    <div style={{ fontSize: 8, color: '#4b5563' }}>N</div>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ fontSize: 10, color: '#2d333b' }}>—</div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function NavBtn({ onClick, disabled, children }) {
+  return (
+    <button onClick={onClick} disabled={disabled} style={{
+      width: 30, height: 30, borderRadius: 8, cursor: disabled ? 'default' : 'pointer',
+      border: '1px solid #30363d', display: 'flex', alignItems: 'center', justifyContent: 'center',
+      background: disabled ? 'transparent' : '#161b22',
+      color: disabled ? '#30363d' : '#e6edf3', fontSize: 17,
+    }}>{children}</button>
+  )
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script></body></html>
