@@ -1,0 +1,559 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="theme-color" content="#101722"><title>NND Team Schedule</title><style>
+*{box-sizing:border-box} :root{color-scheme:dark;--bg:#101722;--fg:#eef3fa;--muted:#aebbd0;--panel:#192332;--line:#ffffff20;--glass:#ffffff12;--accent:#94c9ff;--day:#ffd27a;--night:#a9ccff;--off:#aebbd0;--holiday:#54252d;--red:#ffc0c4;--coater:#65d5c8} :root[data-theme=light]{color-scheme:light;--bg:#eef3fa;--fg:#17263b;--muted:#52637a;--panel:#f9fbff;--line:#233b5925;--glass:#ffffffa0;--accent:#17599f;--day:#94530a;--night:#245bad;--off:#52637a;--holiday:#ffe0e2;--red:#a72435;--coater:#087f76} body{margin:0;background:radial-gradient(ellipse at 90% 0%,#688dcd26,transparent 48%),radial-gradient(ellipse at 0% 80%,#a77ed51a,transparent 50%),var(--bg);color:var(--fg);font:14px -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100dvh} button,input,select,textarea{font:inherit;color:inherit} button,select,input,textarea{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:9px 10px} button{cursor:pointer;touch-action:manipulation} button:disabled{opacity:.35} button.active{background:var(--glass);color:var(--accent);border-color:var(--accent)} button:focus-visible{outline:2px solid var(--accent)} main{max-width:1200px;margin:auto;padding:calc(14px + env(safe-area-inset-top)) 8px 110px;touch-action:pan-y} h1{font-size:25px;letter-spacing:-.8px;margin:4px 0 8px} h2{font-size:17px;margin:0 0 10px} .muted,small{color:var(--muted)} .eyebrow{font-size:10px;letter-spacing:1.3px;color:var(--muted)} .row{display:flex;align-items:center;gap:8px}.between{justify-content:space-between}.wrap{flex-wrap:wrap}.glass{background:linear-gradient(135deg,var(--glass),transparent),var(--panel);border:1px solid var(--line);border-radius:18px;box-shadow:inset 0 1px 0 #ffffff17,0 8px 24px #0000000d;padding:13px;margin:10px 0}.picker{display:flex;gap:6px;align-items:center}.picker select{flex:1;min-width:0}.picker input{width:42px;padding:7px 2px}.weeks{display:flex;gap:3px;margin:8px 0}.weeks button{flex:1;min-width:0;padding:8px 1px;font-size:11px;white-space:nowrap}.range{text-align:center;font-weight:650;font-size:16px;margin:7px 0 7px}.hint{text-align:center;font-size:11px;color:var(--muted);margin:7px 0 12px}.avatar{display:inline-grid;place-items:center;flex:none;width:29px;height:29px;border-radius:50%;font-size:10px;font-weight:750;color:var(--person);background:color-mix(in srgb,var(--person) 14%,var(--panel));border:1px solid color-mix(in srgb,var(--person) 60%,transparent)}[data-theme=light] .avatar{color:color-mix(in srgb,var(--person) 54%,#13263c)}.filter{display:flex;gap:5px;flex-wrap:wrap;margin:12px 0}.filter button{padding:3px;border-radius:24px;line-height:1}.filter .all{padding:9px 12px}.badge{display:inline-grid;place-items:center;border:1px solid var(--line);border-radius:7px;font-weight:700;font-size:11px;min-width:29px;padding:5px 2px}.D{color:var(--day);background:#e9a62c1c}.N{color:var(--night);background:#4589e521}.OFF{color:var(--off);background:var(--glass)}.legend{display:flex;gap:5px;align-items:center;flex-wrap:wrap;font-size:11px;margin:10px 0}.scroll{overflow-x:auto;touch-action:pan-x pan-y;border:1px solid var(--line);border-radius:13px;scrollbar-width:thin}.weektable{border-spacing:0;table-layout:fixed;width:100%;font-size:11px}.weektable td,.weektable th{background:var(--panel);border-right:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center;vertical-align:middle;padding:5px 1px}.weektable .name{position:sticky;left:0;z-index:2;width:var(--name-width,86px);background:var(--panel);box-shadow:2px 0 6px #0001}.fullname{display:block;font-size:10px;line-height:1.2;margin-top:5px;overflow-wrap:anywhere}.dayhead{height:68px;cursor:pointer}.dayhead strong{display:block;text-align:center;font-size:20px;line-height:1.2;width:100%}.weektable .today{background:color-mix(in srgb,var(--accent) 13%,var(--panel))}.weektable .holiday{background:var(--holiday);color:var(--red);font-size:9px;overflow-wrap:anywhere}.workrow td{height:65px}.pairline{display:flex;justify-content:center;align-items:center;gap:2px;flex-wrap:wrap;min-height:24px}.pairline .avatar{width:17px;height:17px;font-size:7px}.pairline b{font-size:9px}.coaterline td{height:19px!important;padding:0!important;background:linear-gradient(90deg,transparent,#2dd4bf18,transparent);border-top:1px solid color-mix(in srgb,var(--coater) 55%,transparent)}.coaterline .name{color:var(--coater);font-size:9px;letter-spacing:1px;background:var(--panel)}.coater td{background:color-mix(in srgb,var(--coater) 6%,var(--panel))}.monthgrid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.weekday{text-align:center;font-size:10px;color:var(--muted);padding:6px 0}.calday{min-width:0;display:flex;flex-direction:column;gap:3px;min-height:120px;background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:4px 1px;cursor:pointer}.calday.blank{opacity:.3;cursor:default}.calday.holiday{background:var(--holiday)}.calday.today{outline:2px solid var(--accent);outline-offset:-2px}.num{text-align:center;font-weight:700;font-size:14px;height:20px}.holiday .num{color:var(--red)}.calshift{display:flex;align-content:center;align-items:center;justify-content:center;flex-wrap:wrap;gap:1px;height:33px;flex:none;border-radius:4px}.calshift b{font-size:9px}.calshift .avatar{width:16px;height:16px;font-size:7px}.holidayname{font-size:8px;line-height:1.1;text-align:center;color:var(--red);overflow-wrap:anywhere;min-height:18px;margin-top:auto}.personalday{min-height:82px;align-items:center}.personalday .holidayname{min-height:0}.noteMark{font-size:8px;color:var(--accent);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.stats,.summarygrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}.summarygrid{grid-template-columns:repeat(2,minmax(0,1fr))}.tile{background:var(--glass);border:1px solid var(--line);border-radius:13px;padding:10px;min-width:0}.tile strong{display:block;font-size:18px;margin:3px 0}.stats .tile{text-align:center}.progress{height:7px;border-radius:99px;background:var(--line);overflow:hidden;margin:10px 0}.progress span{display:block;height:100%;background:var(--accent);border-radius:99px}.tabs{position:fixed;z-index:8;bottom:calc(9px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(calc(100% - 20px),520px);display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #ffffff40;border-radius:30px;padding:5px;background:color-mix(in srgb,var(--panel) 78%,transparent);backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);box-shadow:0 8px 28px #0004,inset 0 1px 0 #ffffff30}.tabs button{border:0;background:transparent;border-radius:24px;padding:7px 1px;font-size:10px;color:var(--muted)}.tabs button.active{color:var(--accent);background:var(--glass);box-shadow:inset 0 1px 0 #ffffff25}.tabs svg{display:block;margin:0 auto 3px;width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.setting{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}.setting:last-child{border:0}.setting select{max-width:58%}.cover{position:fixed;inset:0;z-index:20;background:#0007;backdrop-filter:blur(5px);display:flex;align-items:flex-end;justify-content:center}.sheet{width:min(100%,600px);max-height:85dvh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:24px 24px 0 0;padding:18px 14px calc(18px + env(safe-area-inset-bottom));animation:up .23s ease-out}.detailgroup{border-top:1px solid var(--line);padding:12px 0}.sheet textarea{width:100%;min-height:70px;resize:vertical}.sheet label{display:block;margin:9px 0 4px}.anim-left{animation:left .2s ease-out}.anim-right{animation:right .2s ease-out}@keyframes left{from{opacity:.3;transform:translateX(18px)}to{opacity:1;transform:none}}@keyframes right{from{opacity:.3;transform:translateX(-18px)}to{opacity:1;transform:none}}@keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}@media(min-width:650px){main{padding-left:22px;padding-right:22px}.calday{min-height:130px;padding:7px}.calshift .avatar{width:24px;height:24px;font-size:10px}.holidayname{font-size:11px}.personalday{min-height:95px}.fullname{font-size:12px}.pairline .avatar{width:23px;height:23px;font-size:10px}} 
+
+/* Consistent filter controls and evenly distributed shift legend. */
+.filter{gap:6px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.filter button,.filter button.all{box-sizing:border-box;display:inline-grid;place-items:center;flex:0 0 35px;width:35px;height:35px;padding:0;border-radius:11px;line-height:1;font-size:10px;font-weight:750}
+.filter button .avatar{width:27px;height:27px}
+.filter button.all{color:var(--muted);letter-spacing:.15px}
+.filter button.all.active{color:var(--accent)}
+.legend{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;width:100%;max-width:360px;align-items:center;margin:10px 0 12px;font-size:11px}
+.legend-item{min-width:0;display:flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;line-height:1.1}
+.legend-item .badge{flex:none;width:32px;min-width:32px;height:30px;padding:0;border-radius:8px;font-size:11px}
+.legend-holiday{color:var(--red)}
+.legend-item .holiday-swatch{background:var(--holiday);border-color:color-mix(in srgb,var(--red) 30%,transparent)}
+.holiday-swatch i{display:block;width:10px;height:10px;background:var(--red);border-radius:2px}
+@media(max-width:360px){.legend{gap:2px;font-size:10px}.legend-item{gap:3px}.legend-item .badge{width:29px;min-width:29px;height:29px}.filter{gap:5px}}
+
+/* Compact date navigation, with the native date input retained for mobile. */
+.range{display:flex;align-items:center;justify-content:center;gap:8px;min-height:36px}.range>span:first-child{min-width:0}.date-icon{position:relative;display:inline-grid;place-items:center;flex:0 0 36px;width:36px;height:36px;border-radius:11px;background:var(--panel);border:1px solid var(--line);color:var(--fg);box-shadow:inset 0 1px 0 #ffffff17;overflow:hidden}.date-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}.date-icon input{position:absolute;inset:0;width:100%;height:100%;min-width:0;opacity:0;cursor:pointer;padding:0;border:0;margin:0;font-size:16px}.date-icon input::-webkit-calendar-picker-indicator{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;cursor:pointer}.date-icon:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Keep Day/Night groups three times farther apart than adjacent initials. */
+.calgroups{--initial-gap:2px;display:flex;flex-direction:column;gap:calc(3 * var(--initial-gap));min-width:0}
+.calgroups .calshift{gap:var(--initial-gap);height:36px}
+.calday:not(.personalday){min-height:132px}
+@media(min-width:650px){.calgroups .calshift{height:38px}.calday:not(.personalday){min-height:144px}}
+
+/* Compact calendar: fixed shift rows, holiday reason only on relevant dates. */
+.range{gap:6px}
+.range .today-button{height:36px;flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;padding:0 10px;border-radius:11px;background:var(--panel);border:1px solid var(--line);color:var(--fg);box-shadow:inset 0 1px 0 #ffffff17;font-size:12px;font-weight:600;white-space:nowrap}
+.range .today-button:active{background:var(--glass);color:var(--accent)}
+.calday:not(.personalday){min-height:0;padding:3px 2px;gap:2px}
+.calday:not(.personalday) .num{height:17px;line-height:17px;flex:none;font-size:13px}
+.calday:not(.personalday) .calgroups{gap:calc(3 * var(--initial-gap))}
+.calday:not(.personalday) .calshift{height:34px;gap:var(--initial-gap);padding:0 1px}
+.calday:not(.personalday) .calshift .avatar{width:15px;height:15px;font-size:8px}
+.calday:not(.personalday) .holidayname{font-size:8px;line-height:1.12;min-height:0;margin-top:0;padding:0;overflow-wrap:anywhere}
+.calday .holidayname:empty{display:none}
+@media(max-width:360px){.range{gap:4px;font-size:13px}.range .today-button{padding:0 7px}.calday:not(.personalday) .calshift .avatar{width:14px;height:14px;font-size:7px}}
+@media(min-width:650px){.calday:not(.personalday){padding:4px;gap:2px}.calday:not(.personalday) .num{height:19px;line-height:19px;font-size:15px}.calday:not(.personalday) .calshift .avatar{width:20px;height:20px;font-size:9px}.calday:not(.personalday) .calshift{height:44px}.calday:not(.personalday) .holidayname{font-size:10px}}
+@media(min-width:850px){.calday:not(.personalday) .calshift{height:26px}.calday:not(.personalday) .calshift .avatar{width:22px;height:22px;font-size:10px}}
+
+/* Profile and integrated payroll */
+.profile-button{display:grid;place-items:center;border:0;padding:4px;background:transparent;border-radius:50%;flex:none}.profile-button .avatar{width:38px;height:38px;font-size:13px}.profile-list{display:grid;gap:7px}.profile-list button{display:flex;align-items:center;gap:10px;text-align:left;padding:10px}.profile-list button .avatar{width:34px;height:34px}.profile-list button span:last-child{margin-left:auto;color:var(--accent)}
+.paytitle{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px}.paytitle h2{margin:0}.paytitle button{font-size:12px;padding:7px 9px}.paygrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.paygrid .tile strong{font-size:clamp(16px,4vw,23px);overflow-wrap:anywhere}.paygrid .tile small{font-size:11px}.paynet{color:var(--accent)}.paydaytag{font-size:9px;font-weight:700;line-height:1.2;color:var(--day);background:color-mix(in srgb,var(--day) 10%,var(--panel));border-radius:5px;padding:2px 1px;text-align:center;max-width:100%;overflow-wrap:anywhere}.paycellamt{font-size:10px;font-weight:650;color:var(--fg);text-align:center;max-width:100%;overflow-wrap:anywhere}.personalday{min-height:78px;gap:3px;padding:4px 1px}.personalday .badge{font-size:10px;padding:3px 2px;min-width:26px}.personalday .num{height:17px;line-height:17px}.personalday .PTO{color:#168f68;background:#168f6817}.personalday .HOL{color:var(--red);background:var(--holiday)}.paydetails{margin-top:10px}.paydetails summary{cursor:pointer;font-weight:650;padding:8px 0;color:var(--accent)}.pay-table-wrap{overflow-x:auto;touch-action:pan-x pan-y}.pay-table{width:100%;border-collapse:collapse;font-size:12px;min-width:360px;font-variant-numeric:tabular-nums}.pay-table th,.pay-table td{border-bottom:1px solid var(--line);padding:8px 5px;text-align:right;white-space:nowrap}.pay-table th:first-child,.pay-table td:first-child{text-align:left}.pay-table th{color:var(--muted);font-weight:600}.pay-table .netrow{color:var(--accent);font-weight:750}.pay-table input{accent-color:var(--accent);vertical-align:middle}.pay-sub{font-size:11px;line-height:1.5;color:var(--muted);margin:8px 0}.payform{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}.payform label{display:block;font-size:11px;color:var(--muted)}.payform input,.payform select{width:100%;min-width:0;margin-top:4px}.payeditrow{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:8px 0}.payeditrow select{max-width:70%}.payeditrow input{width:85px}.payeditrow label{margin:0}.payweek{display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding:7px 0;font-size:12px}.paywarn{color:var(--day);font-size:12px;line-height:1.5;margin:7px 0}.paydetail-amount{font-weight:700;font-variant-numeric:tabular-nums}.paytoggle{accent-color:var(--accent)}
+@media(min-width:650px){.paygrid{grid-template-columns:repeat(4,minmax(0,1fr))}.personalday{min-height:90px}.paycellamt{font-size:12px}.paydaytag{font-size:11px}.payform{grid-template-columns:repeat(3,minmax(0,1fr))}}
+
+/* Payday and local PTO overlays */
+:root{--pto:#75dfb1;--payday:#e9d48b;--payday-bg:#64522138;--payday-line:#c6a758}
+:root[data-theme=light]{--pto:#147b54;--payday:#805500;--payday-bg:#fff1bd;--payday-line:#c69a30}
+.badge.PTO,.calshift.PTO{color:var(--pto);background:color-mix(in srgb,var(--pto) 12%,var(--panel));border-color:color-mix(in srgb,var(--pto) 35%,var(--line))}
+.calshift.pto-group{height:auto;min-height:24px;gap:2px;padding:2px 1px}.pto-group b{font-size:8px}
+.personalday.payday{background:color-mix(in srgb,var(--payday-bg) 85%,var(--panel));border-color:var(--payday-line);box-shadow:inset 0 0 0 1px var(--payday-line)}
+.personalday.payday .num{color:var(--payday)}
+.personalday.payday .paydaytag{font-size:clamp(7.5px,2.25vw,12px);font-weight:800;color:var(--payday);background:color-mix(in srgb,var(--payday-line) 17%,var(--panel));border:1px solid color-mix(in srgb,var(--payday-line) 55%,transparent);padding:3px 1px;width:100%;font-variant-numeric:tabular-nums;white-space:normal;overflow-wrap:anywhere}
+.stats.has-pto{grid-template-columns:repeat(4,minmax(0,1fr))}.stats.has-pto .tile{padding:7px 2px}
+
+/* Always-visible paycheck periods and mobile-friendly daily pay explanation. */
+.payperiod-section{margin:0 0 12px}.paysection-title{font-size:16px;font-weight:750;color:var(--accent);margin:0 0 10px}.checkgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,145px),1fr));gap:7px}.checkgrid .checkcard{display:flex;flex-direction:column;gap:5px;text-align:left;min-width:0;padding:10px;border-radius:12px;background:var(--glass);border:1px solid var(--line);white-space:normal}.checkgrid .checkcard.selected{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 9%,var(--panel));box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 28%,transparent)}.checktop{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:4px}.checktop b{font-size:13px}.checktop strong{color:var(--accent);font-size:clamp(14px,3.6vw,19px);font-variant-numeric:tabular-nums}.checkperiod,.checktotals{font-size:10.5px;color:var(--muted);line-height:1.35;overflow-wrap:anywhere}.payperiod-detail{margin-top:12px}.dailyheading{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:2px 8px;margin:0 0 6px}.dailyheading h3{font-size:13px;margin:0;font-weight:700}.dailyheading small{font-size:10px;color:var(--muted)}.dailyheading-lower{margin-top:15px}.dailylist{border:1px solid var(--line);border-radius:12px;overflow:hidden}.dailyrow{display:grid;grid-template-columns:minmax(49px,.75fr) minmax(0,2.5fr) minmax(65px,.95fr);align-items:center;gap:7px;padding:7px 8px;border-bottom:1px solid var(--line);font-size:11px;font-variant-numeric:tabular-nums}.dailyrow:last-child{border-bottom:0}.dailyrow.has-ot{background:color-mix(in srgb,var(--day) 6%,transparent)}.dailydate{display:flex;flex-direction:column;gap:1px}.dailydate small{font-size:10px;color:var(--muted)}.dailyformula{line-height:1.45;overflow-wrap:anywhere}.formula-sub{color:var(--muted)}.otformula{color:var(--day);font-weight:650}.dailyamount{text-align:right;font-size:12px;white-space:nowrap}.dailyfooter{display:flex;justify-content:space-between;align-items:center;padding:9px 8px;color:var(--accent);font-size:13px;font-weight:700}@media(min-width:650px){.dailyrow{font-size:12px;padding:8px 12px}.checkperiod,.checktotals{font-size:12px}.dailyamount{font-size:13px}}
+
+/* Integrated date navigation and collapsible earnings. */
+.range{gap:7px;flex-wrap:wrap}.range .date-trigger{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:0;max-width:100%;padding:6px 9px;font-size:inherit;font-weight:650;background:transparent;border:1px solid transparent;border-radius:12px;line-height:1.25}.date-trigger:hover,.date-trigger[aria-expanded=true]{background:var(--glass);border-color:var(--line)}.date-trigger .date-icon{width:36px;height:36px;flex:0 0 36px}.date-trigger .range-label{min-width:0;text-align:center}.date-cover{align-items:center;padding:12px}.date-sheet{max-width:360px;width:100%;padding:15px;border-radius:24px;background:linear-gradient(135deg,var(--glass),transparent),var(--panel);box-shadow:0 18px 55px #0004,inset 0 1px 0 #ffffff30;max-height:90dvh;touch-action:pan-y}.date-sheet h2{margin:0;font-size:16px}.date-sheet .close-date{padding:6px 10px}.date-nav{display:grid;grid-template-columns:36px minmax(0,1fr) 36px;align-items:center;gap:6px;margin:12px 0 9px}.date-nav .date-arrow{width:36px;height:36px;display:grid;place-items:center;padding:0}.date-arrow svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.date-heading{display:flex;align-items:center;justify-content:center;gap:5px;min-width:0}.date-heading button{font-size:14px;font-weight:700;padding:6px 7px}.date-heading strong{font-size:15px;min-width:0}.date-year-options{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:0 0 9px}.date-year-options button{font-weight:650;padding:9px}.date-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}.date-grid .weekday{font-size:11px;padding:5px 0}.date-grid .date-day{padding:0;min-width:0;height:37px;border-radius:10px;background:transparent;border-color:transparent;font-size:13px;font-variant-numeric:tabular-nums}.date-grid .date-day:not(:disabled):hover{background:var(--glass);border-color:var(--line)}.date-grid .date-day.outside{color:var(--muted);opacity:.5}.date-grid .date-day.is-today{border-color:var(--accent);color:var(--accent)}.date-grid .date-day.selected{background:var(--accent);color:var(--panel);font-weight:750;opacity:1}.date-grid .date-day:disabled{opacity:.22}.date-sheet .date-footer{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:12px}.date-footer small{font-size:10px}.dailydetails{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.dailydetails summary{cursor:pointer;color:var(--accent);font-weight:700;font-size:13px;padding:5px 0;list-style-position:inside}.dailydetails[open] summary{margin-bottom:8px}.dailydetails .dailyheading{margin:0 0 6px;justify-content:flex-end}@media(max-width:360px){.range .date-trigger{font-size:13px;gap:5px;padding:4px}.range{gap:4px}.date-trigger .date-icon{width:32px;height:32px;flex-basis:32px}.date-grid .date-day{height:34px}}
+
+/* Responsive date picker and Korean display names; internal IDs unchanged. */
+.avatar{font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans CJK KR",sans-serif;line-height:1;white-space:nowrap;letter-spacing:-.04em;font-size:11px; font-weight:700;text-align:center}
+.profile-button .avatar{width:38px;height:38px;font-size:13px}
+.profile-list button .avatar{width:34px;height:34px;font-size:12px}
+.date-cover{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:12px;overflow:hidden;overscroll-behavior:contain}
+.date-sheet{width:100%;min-width:0;max-width:390px;max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px - env(safe-area-inset-top) - env(safe-area-inset-bottom));padding:16px;border-radius:22px;overflow-x:hidden;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;flex:none;box-sizing:border-box}
+.date-sheet>.row{min-width:0}.date-sheet h2{font-size:14px;color:var(--muted);font-weight:600}.date-sheet .close-date{width:32px;height:32px;padding:0;display:grid;place-items:center;flex:none}
+.date-nav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 0 10px;min-width:0}
+.date-heading{display:flex;align-items:center;justify-content:flex-start;gap:7px;min-width:0;flex:1;white-space:nowrap}
+.date-heading button{display:inline-flex;align-items:center;gap:5px;flex:none;height:38px;padding:0 9px;font-size:15px;font-weight:700;border-radius:10px;white-space:nowrap;line-height:1}
+.date-heading button span{font-size:11px;color:var(--muted)}
+.date-heading strong{font-size:16px;font-weight:700;letter-spacing:-.025em;line-height:1.2;white-space:nowrap;min-width:0}
+.date-arrows{display:flex;align-items:center;gap:5px;flex:none}
+.date-nav .date-arrow{width:38px;height:38px;border-radius:10px;flex:none}
+.date-grid{grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;min-width:0}
+.date-grid .date-day{width:100%;min-width:0;height:39px;display:grid;place-items:center;padding:0;line-height:1;font-size:14px;touch-action:manipulation}
+.date-grid .weekday{min-width:0;font-size:10px;white-space:nowrap}
+.date-footer{min-width:0}.date-footer small{min-width:0;overflow-wrap:normal;line-height:1.35}.date-footer button{flex:none}
+/* Compact labels reserve enough room for two Korean syllables, including at 320px. */
+.pairline .avatar{width:22px;height:22px;font-size:9px}
+.calday:not(.personalday) .calshift .avatar{width:20px;height:20px;font-size:8px}
+.calday:not(.personalday) .calshift{height:46px;align-content:center}
+@media(max-width:649px){
+ .weektable .name>.avatar{width:29px;height:29px;font-size:11px}
+ .pairline .avatar{width:18px;height:18px;font-size:7.5px}
+ .calday:not(.personalday) .calshift .avatar{width:17px;height:17px;font-size:7.5px}
+ .calday:not(.personalday) .calshift{height:40px;gap:var(--initial-gap);padding:0}
+ .calday:not(.personalday) .calshift b{font-size:8px}
+}
+@media(max-width:360px){
+ .date-cover{padding:8px}.date-sheet{padding:12px;max-height:calc(100vh - 16px);max-height:calc(100dvh - 16px - env(safe-area-inset-top) - env(safe-area-inset-bottom))}
+ .date-nav{gap:5px}.date-heading{gap:5px}.date-heading button{font-size:14px;padding:0 7px;height:35px}.date-heading strong{font-size:14px}.date-arrows{gap:4px}.date-nav .date-arrow{width:34px;height:35px}.date-grid .date-day{height:36px}.date-grid .weekday{font-size:9px}
+ .calday:not(.personalday) .calshift .avatar{width:16px;height:16px;font-size:7px}
+ .pairline .avatar{width:16px;height:16px;font-size:7px}
+ .calday:not(.personalday) .calshift{height:39px}
+}
+@media(min-width:850px){.calday:not(.personalday) .calshift .avatar{width:24px;height:24px;font-size:10px}.calday:not(.personalday) .calshift{height:28px}.pairline .avatar{width:25px;height:25px;font-size:10px}}
+@media(max-height:450px){.date-sheet{padding:10px 14px;max-height:calc(100dvh - 16px);border-radius:16px}.date-nav{margin:6px 0}.date-grid .date-day{height:29px}.date-footer{margin-top:6px!important}}
+
+/* Larger Korean names, responsive to available calendar width. */
+.pairline {gap:1px;min-height:27px;row-gap:2px}
+.pairline .avatar {width:25px;height:25px;font-size:11px}
+.pairline b {font-size:11px}
+.calday:not(.personalday) .calshift .avatar {width:23px;height:23px;font-size:10px}
+.calday:not(.personalday) .calshift b {font-size:11px}
+.calday:not(.personalday) .calshift {height:50px;align-content:center}
+.calday:not(.personalday) .calshift.pto-group {height:auto;min-height:26px}
+@media(min-width:850px){
+ .pairline .avatar{width:28px;height:28px;font-size:12px}
+ .calday:not(.personalday) .calshift .avatar{width:27px;height:27px;font-size:12px}
+ .calday:not(.personalday) .calshift{height:32px}
+ .calday:not(.personalday) .calshift.pto-group{height:auto;min-height:31px}
+}
+@media(max-width:649px){
+ .pairline .avatar{width:20px;height:20px;font-size:9.5px}
+ .pairline b{font-size:11px}
+ .calday:not(.personalday) .calshift .avatar{width:20px;height:20px;font-size:9.5px}
+ .calday:not(.personalday) .calshift b{font-size:10px}
+ .calday:not(.personalday) .calshift{height:44px;column-gap:1px;row-gap:1px;padding:0}
+ .calday:not(.personalday) .calgroups{gap:6px}
+ .calday:not(.personalday) .calshift.pto-group{height:auto;min-height:24px}
+}
+@media(max-width:360px){
+ .pairline .avatar{width:18px;height:18px;font-size:8.5px}
+ .pairline b{font-size:10px}
+ .calday:not(.personalday) .calshift .avatar{width:18px;height:18px;font-size:8.5px}
+ .calday:not(.personalday) .calshift b{font-size:9px}
+}
+@media(max-width:379px){.calday:not(.personalday) .calshift{height:60px}.calday:not(.personalday) .calshift.pto-group{height:auto;min-height:24px}}
+
+/* Unified date selector: one shared surface for date + Today. */
+.range{display:flex;align-items:center;justify-content:center;gap:0;margin:8px 0 10px;min-height:40px}
+.range-shell{display:inline-flex;align-items:center;justify-content:center;gap:0;max-width:100%;background:var(--panel);border:1px solid var(--line);border-radius:14px;box-shadow:inset 0 1px 0 #ffffff17;overflow:hidden}
+.range-shell .date-trigger,.range-shell .today-button{border:0;background:transparent;box-shadow:none;height:40px;margin:0;border-radius:0}
+.range-shell .date-trigger{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-width:0;max-width:100%;padding:0 14px;flex:1 1 auto;white-space:nowrap}
+.range-shell .date-trigger .date-icon{display:inline-grid;place-items:center;width:20px;height:20px;flex:0 0 20px;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}
+.range-shell .date-trigger .range-label{line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.range-shell .range-divider{width:1px;align-self:stretch;background:var(--line);flex:none}
+.range-shell .today-button{display:inline-flex;align-items:center;justify-content:center;padding:0 14px;font-size:13px;font-weight:650;white-space:nowrap;flex:none}
+.range-shell .date-trigger:hover,.range-shell .date-trigger[aria-expanded=true],.range-shell .today-button:hover{background:var(--glass)}
+@media(max-width:360px){.range{margin:8px 0 10px}.range-shell .date-trigger{padding:0 10px;gap:6px;font-size:13px}.range-shell .today-button{padding:0 10px;font-size:12px}.range-shell .date-trigger .date-icon{width:17px;height:17px;flex-basis:17px}.range-shell .date-trigger .date-icon svg{width:17px;height:17px}}
+/* One name-to-circle ratio, based on the 29px / 11px weekly employee badge.
+   The same spacing rules apply to PAIRS and the team month grid. */
+.weektable .name>.avatar{width:29px;height:29px;font-size:11px}
+.pairgroups,.calday:not(.personalday) .calgroups{
+  --member-gap:2px;--shift-gap:6px;--member-size:20px;
+  display:flex;flex-direction:column;gap:var(--shift-gap);min-width:0;
+  container-type:inline-size;
+}
+.pairgroups .pairline,.calday:not(.personalday) .calgroups .calshift{
+  --member-size:clamp(12px,calc(50cqw - 1px),29px);
+  display:flex;flex-wrap:wrap;justify-content:center;align-items:center;align-content:center;
+  gap:var(--member-gap);padding:0;min-width:0;
+  height:calc(var(--member-size)*2 + var(--member-gap) + 2px);
+  min-height:calc(var(--member-size)*2 + var(--member-gap) + 2px);
+  flex:none;
+}
+.pairgroups .pairline .avatar,.calday:not(.personalday) .calgroups .calshift .avatar{
+  box-sizing:border-box;width:var(--member-size);height:var(--member-size);
+  font-size:calc(var(--member-size)*0.3793103448275862);
+  line-height:1;letter-spacing:-.04em;flex:0 0 var(--member-size);
+}
+.pairgroups .pairline b,.calday:not(.personalday) .calgroups .calshift b{
+  flex:0 0 auto;font-size:calc(var(--member-size)*.42);line-height:1;
+}
+.calday:not(.personalday) .calgroups .calshift.pto-group{height:auto;min-height:calc(var(--member-size) + 4px);padding:2px 0}
+@container (min-width: 76px){
+  .pairgroups .pairline,.calday:not(.personalday) .calgroups .calshift{
+    --member-size:clamp(20px,calc((100cqw - 18px)/3),29px);
+    height:calc(var(--member-size) + 4px);min-height:calc(var(--member-size) + 4px);
+  }
+}
+
+
+/* Shared, responsive date controls: same rhythm, typography and surface in both themes. */
+.range{margin:12px 0;gap:0;min-height:44px;flex-wrap:nowrap;--date-font:14px;--date-weight:650;--date-height:44px;--date-padding:12px}
+.range .range-shell{display:inline-flex;align-items:stretch;justify-content:center;max-width:100%;min-width:0;border:1px solid var(--line);background:var(--panel);border-radius:14px;box-shadow:inset 0 1px 0 #ffffff17;overflow:hidden}
+.range .range-shell .date-trigger,.range .range-shell .today-button{display:inline-flex;align-items:center;justify-content:center;height:var(--date-height);min-height:var(--date-height);padding:0 var(--date-padding);font-size:var(--date-font);font-weight:var(--date-weight);line-height:1.25;background:transparent;border:0;border-radius:0;box-shadow:none;color:var(--fg);margin:0;white-space:nowrap}
+.range .range-shell .date-trigger{gap:8px;min-width:0;flex:1 1 auto}
+.range .range-shell .date-trigger .date-icon{height:19px;width:19px;flex:0 0 19px;background:transparent;border:0;border-radius:0;box-shadow:none}
+.range .range-shell .date-trigger .date-icon svg{width:19px;height:19px}
+.range .range-shell .range-label{overflow:visible;text-overflow:clip;white-space:normal;min-width:0;line-height:1.25}
+.range .range-shell .today-button{flex:none}
+.range .range-shell .range-divider{margin:9px 0;width:1px;flex:none;background:var(--line)}
+.range .range-shell button:hover,.range .range-shell button[aria-expanded=true]{background:var(--glass)}
+.range .range-shell button:focus-visible{outline-offset:-3px;border-radius:9px}
+/* Equal title / control / calendar spacing in the weekly and monthly views. */
+#app> .row.between h1{margin-bottom:0}
+#content>.range:first-child{margin-top:12px;margin-bottom:12px}
+/* Year on top; symmetrical horizontal navigation below. */
+.date-sheet .date-year-row{display:flex;align-items:center;justify-content:center;margin:14px 0 8px}
+.date-sheet .date-year-trigger,.date-sheet .date-month-row .date-arrow,.date-sheet .date-footer button{background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:inset 0 1px 0 #ffffff17;font-size:14px;font-weight:650;color:var(--fg)}
+.date-sheet .date-year-trigger{height:40px;min-width:84px;display:inline-flex;justify-content:center;align-items:center;gap:7px;padding:0 12px}
+.date-sheet .date-year-trigger span{font-size:11px;color:var(--muted)}
+.date-sheet .date-month-row{display:grid;grid-template-columns:40px minmax(0,1fr) 40px;align-items:center;gap:12px;margin:0 0 12px}
+.date-sheet .date-month-row strong{text-align:center;font-size:16px;line-height:1.25;min-width:0;font-weight:650}
+.date-sheet .date-month-row .date-arrow{width:40px;height:40px;display:grid;place-items:center;padding:0}
+.date-sheet .date-year-options{gap:8px;margin:0 0 10px}
+@media(max-width:340px){.range .range-shell{width:100%}.range .range-shell .date-trigger{flex:1 1 0}.range .range-shell .range-label{overflow-wrap:normal}}
+@media(max-height:450px){.date-sheet .date-year-row{margin:6px 0}.date-sheet .date-month-row{margin-bottom:6px}.date-sheet .date-year-trigger,.date-sheet .date-month-row .date-arrow{height:34px}}
+
+/* Payroll passcode sheet; uses the existing light/dark palette. */
+.pay-lock-sheet{max-width:390px}.pay-lock-sheet h2{margin:0}.pay-lock-form{display:flex;flex-direction:column;gap:8px;margin-top:12px}.pay-lock-form label{font-size:13px;color:var(--muted);margin:0}.pay-lock-form input{width:100%;height:46px;font-size:16px;letter-spacing:.15em;text-align:center}.pay-lock-form input[aria-invalid=true]{border-color:var(--red)}#pay-lock-error{font-size:12px;color:var(--red);min-height:16px}.pay-lock-submit{height:44px;background:var(--accent);color:var(--panel);font-weight:700;border:0}.pay-lock-submit:active{opacity:.8}
+
+/* A self-contained numeric keypad, no native keyboard or form submission needed. */
+.pay-lock-sheet{width:min(100%,390px);padding:18px 16px calc(18px + env(safe-area-inset-bottom));max-height:90vh;max-height:90dvh;overscroll-behavior:contain}
+.pay-lock-form{gap:10px;margin-top:14px}
+.pin-display{display:flex;justify-content:center;align-items:center;gap:15px;height:50px;background:var(--glass);border:1px solid var(--line);border-radius:14px}
+.pin-dot{width:10px;height:10px;border:1.5px solid var(--muted);border-radius:50%;background:transparent;transition:background .12s}
+.pin-dot.filled{background:var(--fg);border-color:var(--fg)}
+.pin-display.invalid{border-color:var(--red)}
+.pin-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pin-grid button{height:49px;min-width:0;border-radius:13px;background:var(--glass);font-size:23px;font-weight:600;padding:0;display:grid;place-items:center;line-height:1;touch-action:manipulation}
+.pin-grid button.pin-action{font-size:13px;font-weight:600;color:var(--muted)}
+.pin-grid button.pin-action svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.pin-grid button:active{background:var(--line);transform:scale(.97)}
+#pay-lock-error{min-height:15px;text-align:center;font-size:12px}
+.pay-lock-submit{height:46px;width:100%;border-radius:13px;font-size:15px}
+.pay-lock-submit:disabled{opacity:.4;cursor:default}
+@media(max-height:500px){.pay-lock-sheet{padding:12px 14px}.pay-lock-form{gap:6px;margin-top:8px}.pin-grid{gap:5px}.pin-grid button{height:35px;font-size:18px}.pin-display{height:37px}.pay-lock-submit{height:38px}}
+
+/* Simplified personal shift editor */
+.shift-options{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:10px 0 15px}
+.shift-options button{min-width:0;min-height:48px;font-size:15px;font-weight:750;padding:8px 2px;border-radius:12px;opacity:.85}
+.shift-options button[aria-pressed=true]{outline:2px solid currentColor;outline-offset:-2px;opacity:1}
+.shift-options button.D{background:#e9a62c1c;color:var(--day)}
+.shift-options button.N{background:#4589e521;color:var(--night)}
+.shift-options button.PTO{background:color-mix(in srgb,var(--pto) 13%,var(--panel));color:var(--pto)}
+.shift-options button.HOL{background:var(--holiday);color:var(--red)}
+.shift-editor .payeditrow{gap:8px;align-items:center}
+.shift-editor .shift-calc{display:grid;gap:8px;margin-top:12px}
+.shift-editor .shift-calc .row{font-size:13px}
+.shift-editor .shift-reset{font-size:12px;padding:8px 10px;margin-top:14px}
+.shift-editor .shift-total{padding-top:12px;border-top:1px solid var(--line);margin-top:12px}
+.shift-editor .shift-total strong{font-size:23px;color:var(--accent);font-variant-numeric:tabular-nums}
+.stats.has-extra{grid-template-columns:repeat(auto-fit,minmax(55px,1fr))}
+
+/* Personal payroll calendar: every date shares the payday card's geometry.
+   Equal implicit week rows take their height from the tallest date card. */
+.monthgrid.personal-grid{grid-template-rows:auto;grid-auto-rows:1fr;align-items:stretch}
+.calday.personalday{display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:17px 19px 14px minmax(19px,auto);grid-auto-rows:max-content;align-content:start;align-items:start;justify-items:center;justify-content:stretch;text-align:center;gap:3px;min-height:90px}
+.calday.personalday .num{grid-row:1;grid-column:1;width:100%;margin:0}
+.calday.personalday .badge{grid-row:2;grid-column:1;align-self:center;margin:0}
+.calday.personalday .paycellamt{grid-row:3;grid-column:1;align-self:start;margin:0;line-height:1.15}
+.calday.personalday .paydaytag{grid-row:4;grid-column:1;align-self:start;margin:0}
+.calday.personalday .holidayname{grid-row:4;grid-column:1;align-self:end;margin:0;min-height:0;width:100%}
+.calday.personalday.payday .holidayname:not(:empty){grid-row:5}
+.calday.personalday .holidayname:empty{display:none}
+@media(max-width:360px){.calday.personalday{min-height:96px;grid-template-rows:17px 19px 14px minmax(26px,auto)}}
+
+/* Monthly roster: fixed left shift label, independent centered member area. */
+.calday:not(.personalday) .calgroups .calshift:not(.pto-group){
+ --member-gap:2px;--label-width:9px;--label-gap:1px;
+ --member-size:clamp(12px,calc((100cqw - var(--label-width) - var(--label-gap) - var(--member-gap) - 2px)/2),29px);
+ display:grid;grid-template-columns:var(--label-width) minmax(0,1fr);align-items:center;
+ column-gap:var(--label-gap);row-gap:0;padding:2px 1px;box-sizing:border-box;
+ height:calc(var(--member-size)*2 + var(--member-gap) + 4px);min-height:calc(var(--member-size)*2 + var(--member-gap) + 4px);
+}
+.calday:not(.personalday) .calgroups .calshift .shift-label{display:block;align-self:center;justify-self:center;font-size:clamp(8px,calc(var(--member-size)*.42),12px);line-height:1;text-align:center;white-space:nowrap}
+.calday:not(.personalday) .calgroups .calshift .shift-members{display:flex;flex-wrap:wrap;align-items:center;align-content:center;justify-content:center;gap:var(--member-gap,2px);min-width:0;width:100%;max-width:100%}
+.calday:not(.personalday) .calgroups .calshift .shift-empty{color:var(--muted);font-size:10px;line-height:1}
+.calday:not(.personalday) .calgroups .calshift.pto-group{display:flex;flex-direction:column;gap:2px;height:auto;min-height:0;padding:2px 1px}
+@container (min-width: 76px){
+ .calday:not(.personalday) .calgroups .calshift:not(.pto-group){--label-width:13px;--label-gap:2px;--member-size:clamp(18px,calc((100cqw - var(--label-width) - var(--label-gap) - 6px)/3),29px);height:calc(var(--member-size) + 4px);min-height:calc(var(--member-size) + 4px)}
+}
+
+
+@container (max-width: 38px){
+ .calday:not(.personalday) .calgroups .calshift:not(.pto-group){--member-size:clamp(14px,calc(100cqw - 13px),20px);height:calc(var(--member-size)*3 + 2 * var(--member-gap) + 4px);min-height:calc(var(--member-size)*3 + 2 * var(--member-gap) + 4px)}
+}
+
+
+/* Independent current-day and selected-day indicators. Preserve payday and holiday fills. */
+:root{--chosen:#c4a5ff}
+:root[data-theme=light]{--chosen:#8254c5}
+.calday.chosen-day:not(.today){outline:2px solid var(--chosen);outline-offset:-2px}
+.calday.chosen-day .num{color:var(--chosen);font-weight:800}
+.calday.chosen-day.today{outline:2px solid var(--accent);outline-offset:-2px}
+.calday.chosen-day.today .num{color:var(--chosen);text-decoration:underline;text-underline-offset:2px}
+.weektable .dayhead.chosen-day:not(.today){background:color-mix(in srgb,var(--chosen) 12%,var(--panel));box-shadow:inset 0 0 0 2px var(--chosen)}
+.weektable .dayhead.chosen-day strong{color:var(--chosen)}
+.weektable .workrow td.chosen-day:not(.today){background:color-mix(in srgb,var(--chosen) 9%,var(--panel));box-shadow:inset 1px 0 var(--chosen),inset -1px 0 var(--chosen)}
+.weektable .dayhead.chosen-day.today strong{text-decoration:underline;text-underline-offset:3px}
+.date-grid .date-day.selected{background:var(--chosen);color:var(--panel);font-weight:750}
+.date-grid .date-day.selected.is-today{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* Weekly PAIRS: match the compact monthly roster on narrow screens.
+   Keep the D/N label separate from the member badges, including on desktop. */
+.pairgroups .pairline{display:grid;grid-template-columns:13px minmax(0,1fr);column-gap:2px;row-gap:0;align-items:center;align-content:center;padding:2px 0;--member-size:clamp(12px,calc((100cqw - 17px)/2),29px);height:auto;min-height:calc(var(--member-size) + 4px)}
+.pairgroups .pairline .shift-label{justify-self:center;align-self:center;line-height:1;font-size:clamp(8px,calc(var(--member-size)*.42),12px)}
+.pairgroups .pairline .shift-members{display:flex;align-items:center;align-content:center;justify-content:center;flex-wrap:wrap;gap:2px;min-width:0;width:100%}
+.pairgroups .pairline .shift-empty{font-size:10px;color:var(--muted)}
+@media(max-width:649px){
+ .pairgroups .pairline{--monthly-size:clamp(12px,calc((100vw - 62px)/14 - 7px),29px);--member-size:min(var(--monthly-size),clamp(10px,calc((100cqw - 12px)/2),29px));grid-template-columns:9px minmax(0,1fr);column-gap:1px;height:auto;min-height:calc(var(--member-size) + 4px)}
+ .pairgroups .pairline .shift-label{font-size:clamp(8px,calc(var(--member-size)*.42),12px)}
+}
+</style></head><body><main id="app"></main><nav class="tabs" id="tabs" aria-label="Navigation"></nav><div id="modal"></div><script>
+const MEMBERS = [{
+  id: 'shin',
+  first: 'Daeock',
+  last: 'Kim',
+  initials: 'DK',
+  displayName: '대옥',
+  phase: 2,
+  hue: '#60a5fa',
+  coater: false
+}, {
+  id: 'lee',
+  first: 'Seungha',
+  last: 'Shin',
+  initials: 'SS',
+  displayName: '승하',
+  phase: 0,
+  hue: '#a78bfa',
+  coater: false
+}, {
+  id: 'park',
+  first: 'Junho',
+  last: 'Park',
+  initials: 'JP',
+  displayName: '준호',
+  phase: 16,
+  hue: '#34d399',
+  coater: false
+}, {
+  id: 'kim',
+  first: 'Jongmin',
+  last: 'Kim',
+  initials: 'JK',
+  displayName: '종민',
+  phase: 12,
+  hue: '#f87171',
+  coater: false
+}, {
+  id: 'ju',
+  first: 'Sihyun',
+  last: 'Joo',
+  initials: 'SJ',
+  displayName: '시현',
+  phase: 4,
+  hue: '#e879f9',
+  coater: false
+}, {
+  id: 'song',
+  first: 'Youwon',
+  last: 'Song',
+  initials: 'YS',
+  displayName: '유원',
+  phase: 7,
+  hue: '#2dd4bf',
+  coater: true
+}];
+const PROFILE_ORDER = [4,1,2,3,0,5];
+const SCHEDULE_START = new Date(2026, 7, 17);
+const SCHEDULE_END = new Date(2027, 5, 30);
+function daysBetween(a, b) {
+  return Math.round((Date.UTC(b.getFullYear(), b.getMonth(), b.getDate()) - Date.UTC(a.getFullYear(), a.getMonth(), a.getDate())) / 86400000);
+}
+function getShift(phase, date) {
+  const di = daysBetween(SCHEDULE_START, date);
+  const p = ((phase + di) % 24 + 24) % 24;
+  if (p <= 3) return 'D';
+  if (p <= 5) return 'OFF';
+  if (p <= 9) return 'D';
+  if (p <= 11) return 'OFF';
+  if (p <= 15) return 'N';
+  if (p <= 17) return 'OFF';
+  if (p <= 21) return 'N';
+  return 'OFF';
+}
+function inSchedule(date) {
+  return date >= SCHEDULE_START && date <= SCHEDULE_END;
+}
+const HOLIDAYS = {
+  '2026-09-07': {
+    label: 'Labor Day',
+    short: 'Labor',
+    type: 'federal'
+  },
+  '2026-11-03': {
+    label: 'Federal Election (였던것)',
+    short: '였던것',
+    type: 'working'
+  },
+  '2026-11-11': {
+    label: 'Veterans Day (였던것)',
+    short: '였던것',
+    type: 'working'
+  },
+  '2026-11-26': {
+    label: 'Thanksgiving',
+    short: 'Thanks',
+    type: 'thanks'
+  },
+  '2026-11-27': {
+    label: 'Thanksgiving',
+    short: 'Thanks',
+    type: 'thanks'
+  },
+  '2026-12-24': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-25': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-26': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-27': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-28': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-29': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-30': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2026-12-31': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  },
+  '2027-01-01': {
+    label: 'Holiday Shutdown',
+    short: 'Shutdown',
+    type: 'shutdown'
+  }
+};
+const $=s=>document.querySelector(s),add=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n),mon=d=>add(d,-(d.getDay()+6)%7),month=d=>new Date(d.getFullYear(),d.getMonth(),1),key=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`,parse=s=>{let [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d||1)},fmt=(d,o={month:'short',day:'numeric'})=>d.toLocaleDateString('en-US',o),clamp=d=>new Date(Math.max(+SCHEDULE_START,Math.min(+SCHEDULE_END,+d))),name=m=>m.first+' '+m.last,esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])),H=d=>HOLIDAYS[key(d)],shift=(d,i)=>!inSchedule(d)?'—':H(d)?.type==='shutdown'?'OFF':getShift(MEMBERS[i].phase,d),isRed=d=>H(d)&&H(d).type!=='working',labels={D:'Day Shift',N:'Night Shift',OFF:'Day Off',PTO:'PTO','—':'Outside schedule'},times={D:'07:00 – 19:00',N:'19:00 – 07:00 (+1)',OFF:'No scheduled shift',PTO:'Paid time off','—':'No data'},colors={D:'var(--day)',N:'var(--night)',OFF:'var(--off)',PTO:'var(--pto)','—':'var(--muted)'};
+const eastern=new Intl.DateTimeFormat('en-CA',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit',hourCycle:'h23'});function parts(t){return Object.fromEntries(eastern.formatToParts(t).filter(x=>x.type!=='literal').map(x=>[x.type,+x.value]))}function today(){let p=parts(new Date());return new Date(p.year,p.month-1,p.day)}function instant(d,h){const target=Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),h);let t=target;for(let i=0;i<3;i++){let p=parts(new Date(t));t+=target-Date.UTC(p.year,p.month-1,p.day,p.hour,p.minute,p.second)}return t}
+let saved={},storage=true;const STORE='nnd-glass-v1';try{saved=JSON.parse(localStorage.getItem(STORE)||'{}')||{}}catch(e){storage=false}const st={tab:['my','weekly','monthly','settings'].includes(saved.tab)?saved.tab:'weekly',person:Number.isInteger(saved.person)&&saved.person>=0&&saved.person<6?saved.person:4,theme:['light','dark','system'].includes(saved.theme)?saved.theme:'system',view:saved.view==='full'?'full':'five',summary:saved.summary!==false,filter:Array.isArray(saved.filter)?saved.filter.filter(i=>Number.isInteger(i)&&i>=0&&i<6):[],notes:saved.notes&&typeof saved.notes==='object'?saved.notes:{},payroll:saved.payroll&&typeof saved.payroll==='object'?saved.payroll:{},payExpanded:!!saved.payExpanded,payWeeks:!!saved.payWeeks,dailyExpanded:!!saved.dailyExpanded,datePicker:null,yearOpen:false,payDetailKey:typeof saved.payDetailKey==='string'?saved.payDetailKey:null,d:clamp(today()),selectedDate:null,modal:null,dir:0};function save(){try{localStorage.setItem(STORE,JSON.stringify({tab:st.tab,person:st.person,theme:st.theme,view:st.view,summary:st.summary,filter:st.filter,notes:st.notes,payroll:st.payroll,payExpanded:st.payExpanded,payWeeks:st.payWeeks,dailyExpanded:st.dailyExpanded,payDetailKey:st.payDetailKey}));storage=true}catch(e){storage=false}}const media=matchMedia('(prefers-color-scheme: dark)');function theme(){document.documentElement.dataset.theme=st.theme==='system'?(media.matches?'dark':'light'):st.theme;document.querySelector('meta[name=theme-color]').content=document.documentElement.dataset.theme==='dark'?'#101722':'#eef3fa'}media.addEventListener?.('change',theme);
+const av=(i)=>`<span class="avatar" style="--person:${MEMBERS[i].hue}" title="${name(MEMBERS[i])}">${MEMBERS[i].displayName}</span>`,badge=s=>`<span class="badge ${s}">${s}</span>`,btn=(label,act,active=false,disabled=false)=>`<button data-act="${act}" class="${active?'active':''}" ${disabled?'disabled':''}>${label}</button>`,note=d=>st.notes[MEMBERS[st.person].id+'|'+key(d)],ids=()=>MEMBERS.map((_,i)=>i);
+
+const PAY_START=new Date(2026,7,29),PAY_END=SCHEDULE_END;
+const PAY_RATES={k401:.03,ss:.062,medicare:.0145,federal:534.88/3975,ohio:105.45/3975,dublin:.02};
+const PAY_NAMES={k401:'401(k)',ss:'Social Security',medicare:'Medicare',federal:'Federal income tax',ohio:'Ohio state tax',dublin:'Dublin city tax'};
+const PAY_DEFAULT_TAX={k401:false,ss:true,medicare:true,federal:true,ohio:true,dublin:true};
+const PAY_STATUS={day:'Day shift',night:'Night shift',off:'Off',holiday:'Paid holiday',pto:'PTO'};
+const PAY_BADGE={day:'D',night:'N',off:'OFF',holiday:'HOL',pto:'PTO'};
+const payDate=d=>d>=PAY_START&&d<=PAY_END;
+const workStatus=s=>s==='day'||s==='night';
+const money=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+const calendarMoney=n=>'$'+Math.round(Number(n)).toLocaleString('en-US');
+const cents=n=>Math.round((n+Number.EPSILON)*100)/100;
+const payWeek=d=>add(d,-((d.getDay()+1)%7));
+const periods=[];for(let d=new Date(2026,7,28);d<=new Date(2027,6,31);d=add(d,14))periods.push({date:d,start:add(d,-20),end:add(d,-7),key:key(d)});
+// Preserve the previous payroll's explicitly listed holiday-pay assumptions, separate from official roster.
+const payHolidayDates=new Set(Object.keys(HOLIDAYS).filter(k=>k!=='2027-01-01'));
+function payBase(d,i){if(!payDate(d))return 'off';if(payHolidayDates.has(key(d)))return 'holiday';if(key(d)==='2027-01-01')return 'off';return ({D:'day',N:'night',OFF:'off'})[shift(d,i)]||'off'}
+function payProfile(i=st.person){let id=MEMBERS[i].id,p=st.payroll[id];if(!p||typeof p!=='object')p={};p.rate=typeof p.rate==='number'&&Number.isFinite(p.rate)&&p.rate>=0?p.rate:31.25;p.night=Number.isFinite(p.night)&&p.night>=0?p.night:1.1;p.ot=Number.isFinite(p.ot)&&p.ot>=0?p.ot:1.5;p.pto=Number.isFinite(p.pto)&&p.pto>=0?p.pto:250;p.holiday=Number.isFinite(p.holiday)&&p.holiday>=0?p.holiday:250;p.taxes={...PAY_DEFAULT_TAX,...p.taxes};p.taxRates={...PAY_RATES,...p.taxRates};p.days=p.days&&typeof p.days==='object'?p.days:{};p.showAmounts=p.showAmounts!==false;st.payroll[id]=p;return p}
+function payEntry(d,i=st.person){let p=payProfile(i),o=p.days[key(d)]||{},base=payBase(d,i),status=Object.hasOwn(PAY_STATUS,o.status)?o.status:base,h=workStatus(status)?(Number.isFinite(o.hours)?Math.max(0,Math.min(24,o.hours)):12):0;return {status,h}}
+function paySet(d,status,h,i=st.person){let p=payProfile(i),old=payEntry(d,i);if(!Object.hasOwn(PAY_STATUS,status))return;let hours=workStatus(status)?(h===undefined?(workStatus(old.status)?old.h:12):Math.max(0,Math.min(24,Number(h)||0))):0;p.days[key(d)]={status,hours};let nk=MEMBERS[i].id+'|'+key(d);if(status!=='pto'&&st.notes[nk]?.kind==='PTO'){if(st.notes[nk].text)st.notes[nk].kind='Memo';else delete st.notes[nk]}save()}
+function rosterView(d,i){if(!inSchedule(d))return '—';let id=MEMBERS[i].id;return (payDate(d)?st.payroll[id]?.days?.[key(d)]?.status==='pto':st.notes[id+'|'+key(d)]?.kind==='PTO')?'PTO':shift(d,i)}
+function payCalc(i=st.person){let p=payProfile(i),rate=p.rate??0,out={},used=0,wk='';for(let d=PAY_START;d<=PAY_END;d=add(d,1)){let k=key(d),w=key(payWeek(d));if(w!==wk){wk=w;used=0}let {status,h}=payEntry(d,i),reg=workStatus(status)?Math.min(h,Math.max(0,40-used)):0,ot=h-reg,r=rate*(status==='night'?p.night:1),regPay=reg*r+(status==='pto'?p.pto:status==='holiday'?p.holiday:0),otPay=ot*r*p.ot;out[k]={status,h,reg,ot,regPay,otPay,total:regPay+otPay,rate:r,otRate:r*p.ot};used+=h}return out}
+function payTax(gross,p){let ded={};for(let k of Object.keys(PAY_RATES))ded[k]=p.taxes[k]?cents(gross*p.taxRates[k]):0;ded.total=cents(Object.values(ded).reduce((a,b)=>a+b,0));ded.net=cents(gross-ded.total);return ded}
+function paySum(calc,a,b){let t={h:0,reg:0,ot:0,regPay:0,otPay:0,total:0};for(let d=a;d<=b;d=add(d,1)){let row=calc[key(d)];if(row)for(let k of Object.keys(t))t[k]+=row[k]}return t}
+function payChecks(calc,p){return periods.map(v=>{let gross=paySum(calc,v.start,v.end).total;return {...v,gross,ded:payTax(gross,p)}})}
+function payMonthData(){let p=payProfile(),calc=payCalc(),a=month(st.d),b=new Date(a.getFullYear(),a.getMonth()+1,0),checks=payChecks(calc,p),received=checks.filter(v=>v.date>=a&&v.date<=b&&v.end>=PAY_START&&v.start<=PAY_END),next=checks.filter(v=>v.date>b&&v.date.getMonth()===(a.getMonth()+1)%12&&v.start<=b&&v.end>=a&&v.start<=PAY_END&&v.end>=PAY_START);return {p,calc,a,b,checks,received,next,sum:paySum(calc,a,b)}}
+function payCell(d,data){if(!payDate(d))return badge(shift(d,st.person));let v=data.calc[key(d)],p=data.p,tag=PAY_BADGE[v.status],check=data.received.find(x=>x.key===key(d)),known=p.rate!==null;return `<span class="badge ${tag}">${tag}</span>${p.showAmounts&&known&&v.total>0?`<span class="paycellamt">${money(v.total)}</span>`:''}${check&&known?`<span class="paydaytag" title="Payday: ${money(check.ded.net)} take-home pay">${calendarMoney(check.ded.net)}</span>`:''}`}
+function paySettingsForm(){let p=payProfile();return `<div class="payform">${[['rate','Hourly rate ($)',p.rate],['night','Night multiplier',p.night],['ot','OT multiplier',p.ot],['pto','PTO per day ($)',p.pto],['holiday','Holiday per day ($)',p.holiday]].map(([k,l,v])=>`<label>${l}<input type="number" inputmode="decimal" min="0" step="0.01" data-pay-setting="${k}" value="${v??''}" placeholder="Enter rate"></label>`).join('')}</div><div class="setting"><b>Daily amounts in calendar</b><input class="paytoggle" type="checkbox" data-pay-setting="showAmounts" ${p.showAmounts?'checked':''}></div><small>All profiles start with the same hourly rate, multipliers, paid leave amounts and estimated deduction rates. Edits are saved separately for each profile on this device. No payroll data is uploaded.</small><details class="paydetails"><summary>Tax rate settings</summary><div class="payform">${Object.keys(PAY_RATES).map(k=>`<label>${PAY_NAMES[k]} (%)<input type="number" min="0" max="100" step="any" inputmode="decimal" data-tax-rate="${k}" value="${+(p.taxRates[k]*100).toFixed(6)}"></label>`).join('')}</div></details>`}
+function payPeriodLabel(a,b){const opt={month:'short',day:'numeric'};return a.getFullYear()===b.getFullYear()?`${fmt(a,opt)} – ${fmt(b,opt)}, ${b.getFullYear()}`:`${fmt(a,{...opt,year:'numeric'})} – ${fmt(b,{...opt,year:'numeric'})}`}
+const payExactRate=n=>'$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:6});
+function payDailyRows(data,check){let {calc,p}=data,html='';if(!check)return '';for(let d=check.start;d<=check.end;d=add(d,1)){let v=calc[key(d)],date=fmt(d,{month:'short',day:'numeric'}),day=fmt(d,{weekday:'short'});if(!v){html+=`<div class="dailyrow"><div class="dailydate"><b>${date}</b><small>${day}</small></div><div class="dailyformula">Outside available schedule</div><b>—</b></div>`;continue}let formula=workStatus(v.status)?`<div>${v.reg}h × ${payExactRate(v.rate)} <span class="formula-sub">= ${money(v.regPay)}</span></div>${v.ot>0?`<div class="otformula">OT ${v.ot}h × ${payExactRate(v.otRate)} <span class="formula-sub">= ${money(v.otPay)}</span></div>`:''}`:v.status==='pto'||v.status==='holiday'?`<div>${PAY_STATUS[v.status]} · ${money(v.regPay)}</div>`:'<div class="formula-sub">No paid hours</div>';html+=`<div class="dailyrow ${v.ot>0?'has-ot':''}" data-day="${key(d)}"><div class="dailydate"><b>${date}</b><small>${day} · ${PAY_BADGE[v.status]}</small></div><div class="dailyformula">${formula}</div><b class="dailyamount">${money(v.total)}</b></div>`}return html}
+function payOverview(data){let {p,received,sum,calc,a,b}=data,known=p.rate!==null,total=k=>received.reduce((x,v)=>x+(k==='gross'?v.gross:v.ded[k]),0),m=v=>known?money(v):'—',rows=[['Gross pay','gross'],...Object.keys(PAY_RATES).map(k=>[PAY_NAMES[k],k]),['Total deductions','total'],['Take-home pay','net']];let selected=received.find(v=>v.key===st.payDetailKey)||received[0];let cards=received.map(v=>{let t=paySum(calc,v.start,v.end);return `<button class="checkcard ${selected?.key===v.key?'selected':''}" data-act="pay-period:${v.key}" aria-pressed="${selected?.key===v.key}"><span class="checktop"><b>${fmt(v.date,{month:'short',day:'numeric'})}</b><strong>${m(v.ded.net)}</strong></span><span class="checkperiod">${payPeriodLabel(v.start,v.end)}${v.start<PAY_START||v.end>PAY_END?' *':''}</span><span class="checktotals">${t.h}h · OT ${t.ot}h · Gross ${m(v.gross)}</span></button>`}).join('');let weekly=selected?[0,7].map(n=>{let w=add(selected.start,n),e=add(w,6),t=paySum(calc,w,e);return `<div class="payweek"><span>${fmt(w)} – ${fmt(e)}</span><span>${t.h}h · OT ${t.ot}h · <b>${m(t.total)}</b></span></div>`}).join(''):'';return `<section class="glass" id="payroll"><div class="payperiod-section"><h2 class="paysection-title">Weekly hours & earnings</h2>${received.length?`<div class="checkgrid">${cards}</div><div class="payperiod-detail"><div class="dailyheading"><h3>${fmt(selected.date)} · Pay period</h3><small>${payPeriodLabel(selected.start,selected.end)}</small></div>${weekly}<details class="dailydetails" ${st.dailyExpanded?'open':''} data-pay-details="daily"><summary>Daily earnings breakdown</summary><div class="dailyheading"><small>Regular + overtime · Gross</small></div><div class="dailylist">${payDailyRows(data,selected)}</div><div class="dailyfooter"><span>Period gross</span><b>${m(selected.gross)}</b></div></details></div>`:'<p class="pay-sub">No paychecks in this month.</p>'}</div><details class="paydetails" ${st.payExpanded?'open':''} data-pay-details="checks"><summary>Paychecks & tax deductions</summary>${received.length?`<div class="pay-table-wrap"><table class="pay-table"><thead><tr><th>Deduction / rate</th>${received.map(v=>`<th>${fmt(v.date)}<br><small>${fmt(v.start)}–${fmt(v.end)}${v.start<PAY_START||v.end>PAY_END?' *':''}</small></th>`).join('')}<th>Total</th></tr></thead><tbody>${rows.map(([l,k])=>`<tr class="${k==='net'?'netrow':''}"><td>${k in PAY_RATES?`<label><input type="checkbox" data-pay-tax="${k}" ${p.taxes[k]?'checked':''}> ${l} <small>${+(p.taxRates[k]*100).toFixed(4)}%</small></label>`:l}</td>${received.map(v=>`<td>${m(k==='gross'?v.gross:v.ded[k])}</td>`).join('')}<td>${m(total(k))}</td></tr>`).join('')}</tbody></table></div>`:'<p class="pay-sub">No paychecks in this month.</p>'}${received.some(v=>v.start<PAY_START||v.end>PAY_END)?'<p class="pay-sub">* Partial period: some work dates are outside the available schedule.</p>':''}</details><div class="paytitle" style="margin-top:14px"><h2>Payroll · ${fmt(a,{month:'short',year:'numeric'})}</h2></div>${known?'':`<div class="paywarn">Enter your hourly rate in Settings → Payroll settings to calculate earnings.</div>`}<div class="paygrid"><div class="tile"><small>Monthly gross earned</small><strong>${m(sum.total)}</strong></div><div class="tile"><small>Take-home pay this month</small><strong class="paynet">${m(total('net'))}</strong><small>${received.length} paydays</small></div><div class="tile"><small>Hours worked</small><strong>${sum.h}h</strong><small>Regular ${sum.reg}h · OT ${sum.ot}h</small></div><div class="tile"><small>Regular / paid leave · OT</small><strong>${m(sum.regPay)}</strong><small>OT ${m(sum.otPay)}</small></div></div></section>`}
+function payDayEditor(d){
+ if(!payDate(d))return '<div class="detailgroup"><small>Payroll starts Aug 29, 2026.</small></div>';
+ let p=payProfile(),calc=payCalc(),v=calc[key(d)],check=payChecks(calc,p).find(x=>x.key===key(d));
+ let choices=['day','night','pto','holiday'];
+ return `<div class="detailgroup shift-editor" id="pay-day-editor"><div class="row between"><b>Shift · ${MEMBERS[st.person].displayName}</b><span class="badge ${PAY_BADGE[v.status]}">${PAY_BADGE[v.status]}</span></div><div class="shift-options" role="group" aria-label="Change shift">${choices.map(k=>`<button type="button" class="${PAY_BADGE[k]}" data-act="pay-shift:${k}" aria-label="${PAY_STATUS[k]}" aria-pressed="${v.status===k}">${PAY_BADGE[k]}</button>`).join('')}</div><div class="shift-calc">${workStatus(v.status)?`<div class="row between"><span>Regular · ${v.reg}h × ${payExactRate(v.rate)}</span><b>${money(v.reg*v.rate)}</b></div><div class="row between"><span>OT · ${v.ot}h × ${payExactRate(v.otRate)}</span><b>${money(v.otPay)}</b></div>`:v.status==='pto'||v.status==='holiday'?`<div class="row between"><span>${PAY_STATUS[v.status]}</span><b>${money(v.regPay)}</b></div>`:'<div class="row between"><span>Off · 0h</span><b>$0.00</b></div>'}</div><div class="row between shift-total"><b>Daily gross</b><strong>${money(v.total)}</strong></div>${check?`<div class="row between" style="margin-top:12px"><b>Payday · take-home pay</b><b>${money(check.ded.net)}</b></div>`:''}<button class="shift-reset" data-act="pay-reset">Reset to planned shift</button></div>`;
+}
+
+function picker(label){return `<div class="range-shell"><button class="date-trigger" data-act="date-open" aria-label="Choose date: ${esc(label)}" aria-haspopup="dialog" aria-expanded="${st.modal==='date-picker'}"><span class="date-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4M17 3v4M3 10h18"/></svg></span><span class="range-label">${label}</span></button><span class="range-divider" aria-hidden="true"></span><button class="today-button" data-act="today" aria-label="Go to today">Today</button></div>`}
+function dateMonthValid(d){return month(d)<=month(SCHEDULE_END)&&month(d)>=month(SCHEDULE_START)}
+function datePickerModal(){let a=st.datePicker||month(st.d),first=st.tab==='my'?payWeek(a):mon(a),last=new Date(a.getFullYear(),a.getMonth()+1,0),n=Math.ceil((last.getDate()+daysBetween(first,a))/7)*7,prev=new Date(a.getFullYear(),a.getMonth()-1,1),next=new Date(a.getFullYear(),a.getMonth()+1,1);let years=Array.from({length:SCHEDULE_END.getFullYear()-SCHEDULE_START.getFullYear()+1},(_,i)=>SCHEDULE_START.getFullYear()+i);let arrow=(dir,disabled)=>`<button class="date-arrow" data-act="date-month:${dir}" aria-label="${dir<0?'Previous':'Next'} month" ${disabled?'disabled':''}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="${dir<0?'M15 5l-7 7 7 7':'M9 5l7 7-7 7'}"/></svg></button>`;return `<div class="cover date-cover" data-act="close"><section class="sheet date-sheet" role="dialog" aria-modal="true" aria-label="Choose date"><div class="row between"><h2>Choose date</h2><button class="close-date" data-act="close" aria-label="Close date picker">✕</button></div><div class="date-year-row"><button class="date-year-trigger" data-act="date-years" aria-expanded="${st.yearOpen}" aria-label="Choose year">${a.getFullYear()} <span aria-hidden="true">▾</span></button></div>${st.yearOpen?`<div class="date-year-options">${years.map(y=>btn(String(y),'date-year:'+y,y===a.getFullYear())).join('')}</div>`:''}<div class="date-nav date-month-row">${arrow(-1,!dateMonthValid(prev))}<strong>${fmt(a,{month:'long'})}</strong>${arrow(1,!dateMonthValid(next))}</div><div class="date-grid">${(st.tab==='my'?['Sat','Sun','Mon','Tue','Wed','Thu','Fri']:['Mon','Tue','Wed','Thu','Fri','Sat','Sun']).map(x=>`<div class="weekday">${x}</div>`).join('')}${Array.from({length:n},(_,i)=>{let d=add(first,i);return `<button class="date-day ${d.getMonth()!==a.getMonth()?'outside':''} ${+d===+today()?'is-today':''} ${key(d)===st.selectedDate?'selected':''}" data-act="date-select:${key(d)}" aria-label="${fmt(d,{weekday:'long',month:'long',day:'numeric',year:'numeric'})}" ${!inSchedule(d)?'disabled':''}>${d.getDate()}</button>`}).join('')}</div><div class="date-footer"><small>${fmt(SCHEDULE_START)} 2026 – ${fmt(SCHEDULE_END)} 2027</small>${btn('Today','date-today',false,!inSchedule(today()))}</div></section></div>`}
+function weeks(){let a=month(st.d),first=mon(a),last=new Date(a.getFullYear(),a.getMonth()+1,0),out='';for(let i=0;add(first,i*7)<=last;i++){let d=add(first,i*7);out+=btn('Week '+(i+1),'week:'+key(d),+d===+mon(st.d),add(d,6)<SCHEDULE_START||d>SCHEDULE_END)}return `<div class="weeks">${out}</div>`}
+function filters(){return `<div class="filter"><button data-act="filter:all" class="all ${!st.filter.length?'active':''}" aria-label="All employees" aria-pressed="${!st.filter.length}">ALL</button>${MEMBERS.map((m,i)=>`<button data-act="filter:${i}" class="${st.filter.includes(i)?'active':''}" aria-label="${name(m)}" aria-pressed="${st.filter.includes(i)}">${av(i)}</button>`).join('')}</div>`}function legend(){return `<div class="legend" aria-label="Shift legend"><span class="legend-item">${badge('D')}<span>Day</span></span><span class="legend-item">${badge('N')}<span>Night</span></span><span class="legend-item">${badge('OFF')}</span><span class="legend-item legend-holiday"><span class="badge holiday-swatch" aria-hidden="true"><i></i></span><span>Holiday</span></span></div>`}
+function pair(d,s){return `<div class="pairline"><b class="shift-label" style="color:${colors[s]}">${s}</b><div class="shift-members">${MEMBERS.map((m,i)=>!m.coater&&rosterView(d,i)===s?av(i):'').join('')||'<span class="shift-empty">–</span>'}</div></div>`}
+function weekly(){let a=mon(st.d),days=Array.from({length:7},(_,i)=>add(a,i));return `<div class="range">${picker(`${fmt(a)} – ${fmt(days[6])}, ${days[6].getFullYear()}`)}</div><div class="scroll"><table class="weektable"><colgroup><col class="namecol">${days.map(()=>'<col class="datecol">').join('')}</colgroup><thead><tr><th class="name muted">CAL</th>${days.map(d=>`<th class="dayhead ${+d===+today()?'today':''}" data-calendar-date="${key(d)}" data-act="detail:${key(d)}"><small>${fmt(d,{weekday:'short'})}</small><strong>${d.getDate()}</strong><small>${fmt(d,{month:'short'})}</small></th>`).join('')}</tr><tr><th class="name muted">Holiday</th>${days.map(d=>`<td class="${isRed(d)?'holiday':''}">${H(d)?esc(H(d).short):'–'}</td>`).join('')}</tr><tr><th class="name muted">PAIRS</th>${days.map(d=>`<td><div class="pairgroups">${pair(d,'D')}${pair(d,'N')}</div></td>`).join('')}</tr></thead><tbody>${ids().map(i=>`${MEMBERS[i].coater?'<tr class="coaterline"><td class="name">COATER</td><td colspan="7"></td></tr>':''}<tr class="workrow ${MEMBERS[i].coater?'coater':''}"><td class="name">${av(i)}<span class="fullname">${MEMBERS[i].first}<br>${MEMBERS[i].last}</span></td>${days.map(d=>`<td class="${+d===+today()?'today':''}" data-calendar-date="${key(d)}" data-act="detail:${key(d)}">${badge(rosterView(d,i))}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`}
+function stats(){let c={D:0,N:0,OFF:0,PTO:0,HOL:0};for(let d=month(st.d);d.getMonth()===st.d.getMonth();d=add(d,1)){if(!inSchedule(d))continue;let s=payDate(d)?PAY_BADGE[payEntry(d).status]:rosterView(d,st.person);if(s in c)c[s]++}return `<div class="stats ${c.PTO||c.HOL?'has-extra':''}">${Object.keys(c).filter(s=>!['PTO','HOL'].includes(s)||c[s]).map(s=>`<div class="tile"><strong style="color:${s==='HOL'?'var(--red)':colors[s]}">${c[s]}</strong><small>${({D:'Day',N:'Night',OFF:'Off',PTO:'PTO',HOL:'Holiday'})[s]} days</small></div>`).join('')}</div>`}
+function calendar(personal){let pd=personal?payMonthData():null;let a=month(st.d),first=personal?payWeek(a):mon(a),last=new Date(a.getFullYear(),a.getMonth()+1,0),n=Math.ceil((last.getDate()+daysBetween(first,a))/7)*7;return `<div class="range">${picker(`${a.getFullYear()} ${fmt(a,{month:'long'})}`)}</div>${personal?stats():''}<div class="monthgrid ${personal?'personal-grid':''}">${(personal?['Sat','Sun','Mon','Tue','Wed','Thu','Fri']:['Mon','Tue','Wed','Thu','Fri','Sat','Sun']).map(x=>`<div class="weekday">${x}</div>`).join('')}${Array.from({length:n},(_,i)=>{let d=add(first,i);if(d.getMonth()!==a.getMonth()||!inSchedule(d))return `<div class="calday blank ${personal?'personalday':''}"></div>`;let groups=['D','N'].map(s=>`<div class="calshift ${s}"><b class="shift-label">${s}</b><div class="shift-members">${ids().filter(j=>rosterView(d,j)===s).map(av).join('')||'<span class="shift-empty">–</span>'}</div></div>`).join('');let pto=ids().filter(j=>rosterView(d,j)==='PTO');if(pto.length)groups+=`<div class="calshift PTO pto-group"><b>PTO</b><div class="shift-members">${pto.map(av).join('')}</div></div>`;let payday=personal&&pd.received.some(x=>x.key===key(d));return `<div role="button" tabindex="0" data-calendar-date="${key(d)}" data-act="detail:${key(d)}" class="calday ${payday?'payday':''} ${personal?'personalday':''} ${isRed(d)?'holiday':''} ${+d===+today()?'today':''}"><div class="num">${d.getDate()}</div>${personal?payCell(d,pd):`<div class="calgroups">${groups}</div>`}<div class="holidayname">${H(d)?esc(H(d).label.replace('Holiday Shutdown','Shutdown').replace('Federal Election (였던것)','Election Day').replace('Veterans Day (였던것)','Veterans Day')):''}</div></div>`}).join('')}</div>${personal?payOverview(pd):''}`}
+function personselect(){return `<select aria-label="My profile" data-change="person">${PROFILE_ORDER.map(i=>{const m=MEMBERS[i];return `<option value="${i}" ${i===st.person?'selected':''}>${m.displayName} · ${name(m)}</option>`}).join('')}</select>`}function find(from,p){for(let d=from;d<=SCHEDULE_END;d=add(d,1))if(inSchedule(d)&&p(d))return d;return null}function scheduleSummary(){let t=today(),i=st.person,s=rosterView(t,i),next=find(add(t,1),d=>['D','N'].includes(rosterView(d,i))),off=find(s==='OFF'?t:add(t,1),d=>rosterView(d,i)==='OFF'),end=off;while(end&&add(end,1)<=SCHEDULE_END&&rosterView(add(end,1),i)==='OFF')end=add(end,1);let base=s;if(!['D','N'].includes(base)){let prev=add(t,-1);while(prev>=SCHEDULE_START&&!['D','N'].includes(rosterView(prev,i)))prev=add(prev,-1);base=rosterView(prev,i);if(!['D','N'].includes(base)&&next)base=rosterView(next,i)}let rotation=find(add(t,1),d=>['D','N'].includes(rosterView(d,i))&&rosterView(d,i)!==base);return `<div class="glass"><div class="row between"><span class="row">${av(i)}<b>${name(MEMBERS[i])}</b></span>${btn(st.summary?'Hide':'Show','summary')}</div>${st.summary?`<div class="summarygrid" style="margin-top:12px"><div class="tile"><small>TODAY · ${fmt(t)}</small><strong style="color:${colors[s]}">${labels[s]}</strong><small>${times[s]}</small></div><div class="tile"><small>NEXT SHIFT</small><strong>${next?fmt(next):'—'}</strong><small>${next?labels[rosterView(next,i)]+' · '+times[rosterView(next,i)]:'No data'}</small></div><div class="tile"><small>${s==='OFF'?'Current days off':'Next days off'}</small><strong>${off?fmt(off)+(off<end?' – '+fmt(end):''):'—'}</strong><small>${off?daysBetween(off,end)+1+' consecutive days':''}</small></div><div class="tile"><small>NEXT ROTATION</small><strong>${rotation?fmt(rotation):'—'}</strong><small>${rotation?base+' → '+rosterView(rotation,i):'No data'}</small></div></div><div id="countdown" style="margin-top:13px"></div>`:''}</div>`}
+function tick(){let el=$('#countdown');if(!el)return;let t=today(),now=Date.now(),i=st.person,active=null,next=null;for(let d=add(t,-1);d<=SCHEDULE_END;d=add(d,1)){let s=rosterView(d,i);if(s!=='D'&&s!=='N')continue;let a=instant(d,s==='D'?7:19),b=instant(s==='N'?add(d,1):d,s==='D'?19:7);if(now>=a&&now<b){active={a,b,s};break}if(a>now){next={a,b,s};break}}let item=active||next;if(!item){el.innerHTML='<small>No upcoming shift in schedule.</small>';return}let ms=(active?item.b:item.a)-now,sec=Math.max(0,Math.floor(ms/1000)),h=Math.floor(sec/3600),m=Math.floor(sec%3600/60),s=sec%60,p=active?100*(now-item.a)/(item.b-item.a):0;el.innerHTML=`<div class="row between"><small>${active?'ON SHIFT · '+labels[item.s]:'UNTIL NEXT SHIFT'}</small><small>Eastern Time</small></div><div style="font-size:24px;font-weight:750;font-variant-numeric:tabular-nums;margin-top:4px">${h}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s</div>${active?`<div class="progress"><span style="width:${p}%"></span></div><div class="row between"><small>Start</small><small>${Math.floor(p)}%</small><small>End</small></div>`:''}`}
+function settings(){return `<div class="glass"><h2>Personal settings</h2><div class="setting"><b>My profile</b>${personselect()}</div><div class="setting"><b>Payroll settings</b>${btn('Edit','pay-unlock')}</div><div class="setting"><b>Theme</b><select data-change="theme">${['system','light','dark'].map(x=>`<option value="${x}" ${st.theme===x?'selected':''}>${x[0].toUpperCase()+x.slice(1)}</option>`).join('')}</select></div><div class="setting"><b>Weekly view</b><select data-change="view"><option value="five" ${st.view==='five'?'selected':''}>5 days</option><option value="full" ${st.view==='full'?'selected':''}>Full week</option></select></div><div class="setting"><b>Shift summary</b><input type="checkbox" data-change="summary" ${st.summary?'checked':''}></div><small>${storage?'Settings and shift changes are stored on this device.':'Browser storage unavailable; changes may not persist.'}</small></div><div class="glass"><h2>Calendar tools</h2><div class="setting"><div><b>Export my shifts</b><br><small>Apple / Google Calendar (.ics)</small></div>${btn('Export','export')}</div><div class="setting"><div><b>Backup personal settings</b><br><small>Download a local JSON backup</small></div>${btn('Backup','backup')}</div></div>`}
+const icons={my:'<circle cx="12" cy="8" r="3.5"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>',weekly:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M8 14h2m4 0h2M8 17h2m4 0h2"/>',monthly:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7 14h1m4 0h1m4 0h1M7 17h1m4 0h1m4 0h1"/>',settings:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3m14 0h3M5 5l2 2m10 10 2 2M5 19l2-2M17 7l2-2"/><circle cx="12" cy="12" r="7"/>'};
+function sizing(scrollToday=false){let sc=$('.scroll');if(!sc)return;let width=sc.clientWidth,n=st.view==='five'?5:7,nameWidth=width>=650?135:n===5?Math.min(90,Math.max(75,width*.23)):Math.min(76,width*.21),w=(width-nameWidth)/n;sc.style.setProperty('--name-width',nameWidth+'px');$('.namecol').style.width=nameWidth+'px';document.querySelectorAll('.datecol').forEach(c=>c.style.width=w+'px');$('.weektable').style.width=(nameWidth+7*w)+'px';if(scrollToday){let selected=st.selectedDate?parse(st.selectedDate):today();let i=daysBetween(mon(st.d),selected);if(i<0||i>6)i=daysBetween(mon(st.d),today());sc.scrollLeft=n===5&&i>=5&&i<7?(i-4)*w:0}}
+function render(animate=false){theme();let a=$('#app');a.innerHTML=`<div class="row between"><div><div class="eyebrow">NND VISION SPECIALIST · 2026–27</div><h1>${{my:'My Schedule',weekly:'Weekly Schedule',monthly:'Monthly Calendar',settings:'Settings'}[st.tab]}</h1></div><button class="profile-button" data-act="profile" aria-label="Change user">${av(st.person)}</button></div><div id="content" class="${animate?(st.dir<0?'anim-right':'anim-left'):''}">${st.tab==='weekly'?weekly():st.tab==='monthly'?calendar(false):st.tab==='my'?scheduleSummary()+calendar(true):settings()}</div>`;$('#tabs').innerHTML=[['my','My Shift'],['weekly','Weekly'],['monthly','Monthly'],['settings','Settings']].map(([x,l])=>btn(`<svg viewBox="0 0 24 24">${icons[x]}</svg>${l}`,'tab:'+x,st.tab===x)).join('');sizing(true);save();syncDayHighlights();tick();showModal()}
+function showModal(){let el=$('#modal');if(!st.modal){el.innerHTML='';return}if(st.modal==='date-picker'){el.innerHTML=datePickerModal();return}if(st.modal==='profile'){el.innerHTML=`<div class="cover" data-act="close"><section class="sheet" role="dialog" aria-modal="true"><div class="row between"><h2>Switch profile</h2>${btn('✕','close')}</div><div class="profile-list">${PROFILE_ORDER.map(i=>{const m=MEMBERS[i];return `<button data-act="choose-person:${i}" class="${i===st.person?'active':''}">${av(i)}<b>${name(m)}</b><span>${i===st.person?'✓':''}</span></button>`}).join('')}</div><p class="pay-sub">Profile selection is local to this device, not a secure login.</p></section></div>`;return}if(st.modal==='pay-unlock'){el.innerHTML=`<div class="cover" data-act="close"><section class="sheet pay-lock-sheet" role="dialog" aria-modal="true" aria-labelledby="pay-lock-title"><div class="row between"><h2 id="pay-lock-title">Payroll settings</h2>${btn('✕','close')}</div><div class="pay-lock-form"><label id="pay-pin-label">Enter passcode</label><div id="pay-pin" class="pin-display" role="status" aria-label="0 of 6 digits entered">${Array.from({length:6},()=>'<span class="pin-dot" aria-hidden="true"></span>').join('')}</div><div id="pay-lock-error" role="alert" aria-live="polite"></div><div class="pin-grid" aria-label="Numeric keypad">${[1,2,3,4,5,6,7,8,9].map(n=>`<button type="button" data-act="pin-digit:${n}" aria-label="${n}">${n}</button>`).join('')}<button type="button" class="pin-action" data-act="pin-clear">Clear</button><button type="button" data-act="pin-digit:0" aria-label="0">0</button><button type="button" class="pin-action" data-act="pin-back" aria-label="Delete last digit"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5h12v14H9l-7-7 7-7Z M12 9l6 6m0-6-6 6"/></svg></button></div><button type="button" data-act="pin-unlock" class="pay-lock-submit" disabled>Unlock</button></div></section></div>`;return}if(st.modal==='pay-settings'){el.innerHTML=`<div class="cover" data-act="close"><section class="sheet" role="dialog" aria-modal="true"><div class="row between"><h2>Pay settings · ${name(MEMBERS[st.person])}</h2>${btn('Done','close')}</div>${paySettingsForm()}</section></div>`;return}let d=parse(st.modal);el.innerHTML=`<div class="cover" data-act="close"><section class="sheet" role="dialog" aria-modal="true"><div class="row between"><h2>${fmt(d,{weekday:'long',month:'long',day:'numeric',year:'numeric'})}</h2>${btn('✕','close')}</div>${st.tab==='my'?payDayEditor(d):`${H(d)?`<p style="color:var(--red)">${esc(H(d).label)}</p>`:''}${['D','N','OFF','PTO'].filter(s=>s!=='PTO'||ids().some(i=>rosterView(d,i)==='PTO')).map(s=>`<div class="detailgroup"><div class="row between"><b style="color:${colors[s]}">${labels[s]}</b><small>${times[s]}</small></div><div class="row wrap" style="margin-top:8px">${MEMBERS.map((m,i)=>rosterView(d,i)===s?`<span class="row">${av(i)}${name(m)}${m.coater?' · Coater':''}</span>`:'').join('')||'None'}</div></div>`).join('')}`}</section></div>`}
+
+function move(dir){if(st.tab==='settings'||st.modal)return;let d=st.tab==='weekly'?add(mon(st.d),dir*7):new Date(st.d.getFullYear(),st.d.getMonth()+dir,1);if(d>SCHEDULE_END||(st.tab==='weekly'?add(d,6):new Date(d.getFullYear(),d.getMonth()+1,0))<SCHEDULE_START)return;st.d=clamp(d);st.dir=dir;render(true)}function download(data,type,file){let url=URL.createObjectURL(new Blob([data],{type})),a=document.createElement('a');a.href=url;a.download=file;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),10000)}function exportCal(){let out=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//NND//Shift Schedule//EN','CALSCALE:GREGORIAN'],stamp=new Date().toISOString().replace(/[-:]/g,'').replace(/\.\d+Z/,'Z'),utc=t=>new Date(t).toISOString().replace(/[-:]/g,'').replace(/\.\d+Z/,'Z');for(let d=SCHEDULE_START;d<=SCHEDULE_END;d=add(d,1)){let s=rosterView(d,st.person);if(s!=='D'&&s!=='N')continue;out.push('BEGIN:VEVENT',`UID:${MEMBERS[st.person].id}-${key(d)}@nnd-schedule`,`DTSTAMP:${stamp}`,`DTSTART:${utc(instant(d,s==='D'?7:19))}`,`DTEND:${utc(instant(s==='N'?add(d,1):d,s==='D'?19:7))}`,`SUMMARY:NND ${labels[s]}`,'END:VEVENT')}out.push('END:VCALENDAR');download(out.join('\r\n')+'\r\n','text/calendar','NND-'+MEMBERS[st.person].initials+'.ics')}
+let suppress=0;document.addEventListener('click',e=>{if(Date.now()<suppress){e.preventDefault();return}let el=e.target.closest('[data-act]');if(!el||el.disabled)return;if(el.classList.contains('cover')&&e.target.closest('.sheet'))return;let [act,v]=el.dataset.act.split(':');if(act==='date-open'){st.datePicker=month(st.d);st.yearOpen=false;st.modal='date-picker';showModal();$('.date-trigger')?.setAttribute('aria-expanded','true');return}if(act==='date-years'){st.yearOpen=!st.yearOpen;showModal();return}if(act==='date-month'){let a=st.datePicker,d=new Date(a.getFullYear(),a.getMonth()+Number(v),1);if(dateMonthValid(d)){st.datePicker=d;st.yearOpen=false;showModal()}return}if(act==='date-year'){let a=new Date(Number(v),st.datePicker.getMonth(),1);st.datePicker=month(clamp(a));st.yearOpen=false;showModal();return}if(act==='date-select'||act==='date-today'){let d=act==='date-today'?today():parse(v);if(!inSchedule(d))return;st.d=d;st.selectedDate=act==='date-today'?null:key(d);st.modal=null;render();return}if(act==='profile'||act==='pay-unlock'){if(act==='pay-unlock'){if(st.tab!=='settings')return;payPin=''}st.modal=act;showModal();return}if(act.startsWith('pin-')){if(st.modal==='pay-unlock'&&st.tab==='settings')pinAction(act,v);return}if(act==='choose-person'){st.person=Number(v);st.modal=null;render();return}if(act==='pay-shift'){let d=parse(st.modal);if(st.tab!=='my'||!payDate(d)||!['day','night','pto','holiday'].includes(v))return;paySet(d,v,workStatus(v)?12:0);renderPayDay();return}if(act==='pay-reset'){delete payProfile().days[st.modal];let nk=MEMBERS[st.person].id+'|'+st.modal;if(st.notes[nk]?.kind==='PTO'){if(st.notes[nk].text)st.notes[nk].kind='Memo';else delete st.notes[nk]}save();renderPayDay();return}if(act==='pay-period'){st.payDetailKey=v;save();let el=$('#payroll');if(el)el.outerHTML=payOverview(payMonthData());return}if(act==='export'){exportCal();return}if(act==='backup'){download(JSON.stringify({person:st.person,theme:st.theme,view:st.view,notes:st.notes,payroll:st.payroll,summary:st.summary},null,2),'application/json','NND-backup.json');return}if(act==='tab'){st.tab=v;st.modal=null;render(true);window.scrollTo(0,0);return}if(act==='today'){st.d=clamp(today());st.selectedDate=null;}else if(act==='week')st.d=clamp(parse(v));else if(act==='view')st.view=v;else if(act==='filter')st.filter=v==='all'?[]:st.filter.includes(+v)?st.filter.filter(x=>x!==+v):[...st.filter,+v];else if(act==='summary')st.summary=!st.summary;else if(act==='detail'){if(!inSchedule(parse(v)))return;st.d=parse(v);st.selectedDate=v;syncDayHighlights();st.modal=v;showModal();return}else if(act==='close'){st.modal=null;render();return}else if(act==='jumpweek'){st.d=parse(v);st.selectedDate=key(st.d);st.tab='weekly';st.modal=null}else return;render()});function renderPayDay(){let el=$('#pay-day-editor');if(el)el.outerHTML=payDayEditor(parse(st.modal));let main=$('#content');if(st.tab==='my'&&main)main.innerHTML=scheduleSummary()+calendar(true);tick()}
+document.addEventListener('toggle',e=>{if(e.target.isConnected&&e.target.dataset.payDetails){if(e.target.dataset.payDetails==='checks')st.payExpanded=e.target.open;else if(e.target.dataset.payDetails==='daily')st.dailyExpanded=e.target.open;else st.payWeeks=e.target.open;save()}},true);
+let payPin='';
+function updatePin(error=''){
+  let display=$('#pay-pin');if(!display)return;
+  display.setAttribute('aria-label',`${payPin.length} of 6 digits entered`);
+  display.classList.toggle('invalid',!!error);
+  display.querySelectorAll('.pin-dot').forEach((dot,i)=>dot.classList.toggle('filled',i<payPin.length));
+  $('#pay-lock-error').textContent=error;
+  $('.pay-lock-submit').disabled=payPin.length!==6;
+}
+function pinAction(act,v){
+  if(st.modal!=='pay-unlock'||st.tab!=='settings')return;
+  if(act==='pin-digit'&&/^[0-9]$/.test(v)&&payPin.length<6)payPin+=v;
+  else if(act==='pin-back')payPin=payPin.slice(0,-1);
+  else if(act==='pin-clear')payPin='';
+  else if(act==='pin-unlock'){
+    if(payPin.length!==6)return;
+    if(payPin==='990922'){payPin='';st.modal='pay-settings';showModal();return;}
+    payPin='';updatePin('Incorrect passcode. Try again.');return;
+  }
+  updatePin();
+}
+document.addEventListener('keydown',e=>{
+  if(st.modal!=='pay-unlock'||st.tab!=='settings'||e.ctrlKey||e.metaKey||e.altKey)return;
+  if(/^[0-9]$/.test(e.key)){e.preventDefault();pinAction('pin-digit',e.key)}
+  else if(e.key==='Backspace'||e.key==='Delete'){e.preventDefault();pinAction('pin-back')}
+  else if(e.key==='Enter'){e.preventDefault();pinAction('pin-unlock')}
+});
+document.addEventListener('change',e=>{let t=e.target;if(t.dataset.paySetting){let p=payProfile(),k=t.dataset.paySetting;if(k==='showAmounts')p[k]=t.checked;else if(t.value===''&&k==='rate')p.rate=31.25;else if(t.value!==''&&Number.isFinite(Number(t.value)))p[k]=Math.max(0,Number(t.value));save();return}if(t.dataset.taxRate){if(t.value!==''&&Number.isFinite(Number(t.value))){payProfile().taxRates[t.dataset.taxRate]=Math.min(100,Math.max(0,Number(t.value)))/100;save()}return}if(t.dataset.payTax){payProfile().taxes[t.dataset.payTax]=t.checked;st.payExpanded=true;save();let el=$('#payroll');if(el)el.outerHTML=payOverview(payMonthData());return}let a=e.target.dataset.change,v=e.target.value;if(a==='month'||a==='date'){if(!v)return;st.d=clamp(parse(v))}else if(a==='person')st.person=+v;else if(a==='theme')st.theme=v;else if(a==='view')st.view=v;else if(a==='summary')st.summary=e.target.checked;else return;render()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&st.modal){let wasDate=st.modal==='date-picker';st.modal=null;showModal();if(wasDate){$('.date-trigger')?.setAttribute('aria-expanded','false');$('.date-trigger')?.focus()}}else if((e.key==='Enter'||e.key===' ')&&e.target.classList.contains('calday')){e.preventDefault();e.target.click()}});
+let gesture=null;$('#app').addEventListener('touchstart',e=>{gesture=null;if(e.touches.length!==1||st.modal||st.tab==='settings'||e.target.closest('input,select,textarea,.pay-table-wrap,summary'))return;if(st.tab==='weekly'&&e.target.closest('.scroll')&&$('.scroll').scrollWidth>$('.scroll').clientWidth+2)return;let t=e.touches[0];gesture={x:t.clientX,y:t.clientY,id:t.identifier}},{passive:true});$('#app').addEventListener('touchend',e=>{if(!gesture)return;let g=gesture;gesture=null;let t=Array.from(e.changedTouches).find(t=>t.identifier===g.id);if(!t)return;let dx=t.clientX-g.x,dy=t.clientY-g.y;if(Math.abs(dx)>48&&Math.abs(dx)>Math.abs(dy)*1.5){suppress=Date.now()+350;move(dx<0?1:-1)}},{passive:true});$('#app').addEventListener('touchcancel',()=>gesture=null,{passive:true});window.addEventListener('resize',()=>sizing());function syncDayHighlights(){
+ const current=key(today());
+ document.querySelectorAll('[data-calendar-date]').forEach(el=>{
+   const k=el.dataset.calendarDate;
+   el.classList.toggle('today',k===current);
+   el.classList.toggle('chosen-day',k===st.selectedDate);
+   if(k===current)el.setAttribute('aria-current','date');else el.removeAttribute('aria-current');
+ });
+ document.querySelectorAll('.date-grid .date-day').forEach(el=>{
+   const k=el.dataset.act.split(':')[1];
+   el.classList.toggle('is-today',k===current);
+   if(k===current)el.setAttribute('aria-current','date');else el.removeAttribute('aria-current');
+ });
+}
+let highlightDay=key(today());
+function refreshDayHighlights(){const current=key(today());if(current!==highlightDay){highlightDay=current;syncDayHighlights();}}
+setInterval(()=>{tick();refreshDayHighlights()},1000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){syncDayHighlights();refreshDayHighlights();tick();}});
+window.addEventListener('pageshow',syncDayHighlights);
+render();
+</script></body></html>
